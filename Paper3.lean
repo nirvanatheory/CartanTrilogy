@@ -16,9 +16,9 @@ open Paper2
 -- STEP 12: Isolation of the Lorentzian Subquadric M⁴ ⊂ Q₅
 -- ============================================================================
 
-def CapableOfNormalFluxConfinement (c : ℕ) : Prop := c > NullCapacity
+abbrev CapableOfNormalFluxConfinement (c : ℕ) : Prop := c > NullCapacity
 
-def CapableOfEmbeddingSingularLensLink (c : ℕ) : Prop :=
+abbrev CapableOfEmbeddingSingularLensLink (c : ℕ) : Prop :=
   c + ShortRootMultiplicity ≤ ShilovHorizonSphereDim
 
 def isolation_InvolutiveSubquadricCodim :
@@ -60,7 +60,7 @@ def isolation_InvolutiveSubquadricCodim :
 
 def InvolutiveSubquadricCodim : ℕ := isolation_InvolutiveSubquadricCodim.survivor
 
-def CauchySliceCodimLaw (d_s : ℕ) : Prop :=
+abbrev CauchySliceCodimLaw (d_s : ℕ) : Prop :=
   d_s + InvolutiveSubquadricCodim = ShilovHorizonSphereDim
 
 def isolation_CauchySpatialSphereDim : UniqueLawSolution CauchySliceCodimLaw where
@@ -80,7 +80,7 @@ def isolation_CauchySpatialSphereDim : UniqueLawSolution CauchySliceCodimLaw whe
 
 def CauchySpatialSphereDim : ℕ := isolation_CauchySpatialSphereDim.survivor
 
-def SubquadricSpacetimeLaw (d_M : ℕ) : Prop :=
+abbrev SubquadricSpacetimeLaw (d_M : ℕ) : Prop :=
   d_M ≥ TimelikeSignatureRank ∧ d_M - TimelikeSignatureRank = CauchySpatialSphereDim
 
 def isolation_SubquadricSpacetimeDim : UniqueLawSolution SubquadricSpacetimeLaw where
@@ -99,8 +99,8 @@ def SubquadricSpacetimeDim : ℕ := isolation_SubquadricSpacetimeDim.survivor
 -- STEP 13: Parabolic |1|-Grading Termination and Superselection Rules
 -- ============================================================================
 
-def CapableOfNonTrivialNilpotentTransport (k : ℕ) : Prop := k > NullCapacity
-def CapableOfAbelianUnipotentClosure (k : ℕ) : Prop := k ≤ RestrictedLongRootMultiplicity
+abbrev CapableOfNonTrivialNilpotentTransport (k : ℕ) : Prop := k > NullCapacity
+abbrev CapableOfAbelianUnipotentClosure (k : ℕ) : Prop := k ≤ RestrictedLongRootMultiplicity
 
 def isolation_ParabolicUnipotentTerminationDegree :
     IntersectionIsolation CapableOfNonTrivialNilpotentTransport CapableOfAbelianUnipotentClosure where
@@ -131,8 +131,8 @@ def isolation_ParabolicUnipotentTerminationDegree :
 def ParabolicUnipotentTerminationDegree : ℕ :=
   isolation_ParabolicUnipotentTerminationDegree.survivor
 
-def CapableOfTopDeterminantCalibration (k : ℕ) : Prop := k ≥ ShortRootMultiplicity
-def CapableOfNonZeroExteriorGrade (k : ℕ) : Prop :=
+abbrev CapableOfTopDeterminantCalibration (k : ℕ) : Prop := k ≥ ShortRootMultiplicity
+abbrev CapableOfNonZeroExteriorGrade (k : ℕ) : Prop :=
   Nat.choose ShortRootMultiplicity k > NullCapacity
 
 def isolation_ExteriorAlgebraTerminationDegree :
