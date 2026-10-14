@@ -1,0 +1,30 @@
+name: Lean 4 Formal Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify-trilogy:
+    name: Machine-Verify Paper1, Paper2, and Paper3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout CartanTrilogy Repository
+        uses: actions/checkout@v4
+
+      - name: Install elan and Lean 4 Toolchain
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Fetch Mathlib4 Dependency & Precompiled Cache
+        run: |
+          lake update
+          lake exe cache get
+
+      - name: Verify All Proofs & Output Invariant Ledger
+        run: |
+          lake build -v
