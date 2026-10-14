@@ -28,8 +28,8 @@ structure UniqueLawSolution {α : Type} (Law : α → Prop) where
 -- STEP 1: Isolation of Vanishing Generator Capacity (NullCapacity)
 -- ============================================================================
 
-def NonNegativeCapacity (c : ℕ) : Prop := c ≥ c - c
-def ScaleInvariantNullity (c : ℕ) : Prop := c + c ≤ c
+abbrev NonNegativeCapacity (c : ℕ) : Prop := c ≥ c - c
+abbrev ScaleInvariantNullity (c : ℕ) : Prop := c + c ≤ c
 
 def isolation_NullCapacity :
     IntersectionIsolation NonNegativeCapacity ScaleInvariantNullity where
@@ -68,8 +68,8 @@ def SingletonRayCardinality : ℕ := ProjectiveRaySingleton.length
 @[simp] theorem SingletonRayCardinality_val :
     SingletonRayCardinality = ([NullCapacity] : List ℕ).length := rfl
 
-def CapableOfNonEmptyNullCone (p : ℕ) : Prop := p > NullCapacity
-def CapableOfPointedConvexity (p : ℕ) : Prop := p * p ≤ p
+abbrev CapableOfNonEmptyNullCone (p : ℕ) : Prop := p > NullCapacity
+abbrev CapableOfPointedConvexity (p : ℕ) : Prop := p * p ≤ p
 
 def isolation_TimelikeSignatureRank :
     IntersectionIsolation CapableOfNonEmptyNullCone CapableOfPointedConvexity where
@@ -102,10 +102,10 @@ def TimelikeSignatureRank : ℕ := isolation_TimelikeSignatureRank.survivor
 -- STEP 3: Elimination Across All JNW / Cartan Types (JordanAlgebraRank)
 -- ============================================================================
 
-def CapableOfNonCollinearBoundaryRays (r : ℕ) : Prop :=
+abbrev CapableOfNonCollinearBoundaryRays (r : ℕ) : Prop :=
   r > TimelikeSignatureRank
 
-def CapableOfQuadraticNullBoundary (r : ℕ) : Prop :=
+abbrev CapableOfQuadraticNullBoundary (r : ℕ) : Prop :=
   r * r ≤ (TimelikeSignatureRank + TimelikeSignatureRank) * r
 
 def isolation_JordanAlgebraRank :
@@ -188,8 +188,8 @@ theorem jordan_cubic_identity (B : W →ₗ[ℚ] W →ₗ[ℚ] ℚ)
     rw [hSymm a.vec b.vec]
     module
 
-def CapableOfNonZeroIdempotentRay (k : ℕ) : Prop := k > NullCapacity
-def CapableOfSingularBoundaryIdempotent (k : ℕ) : Prop :=
+abbrev CapableOfNonZeroIdempotentRay (k : ℕ) : Prop := k > NullCapacity
+abbrev CapableOfSingularBoundaryIdempotent (k : ℕ) : Prop :=
   k + TimelikeSignatureRank ≤ JordanAlgebraRank
 
 def isolation_PrimitiveIdempotentTrace :
@@ -220,7 +220,7 @@ def isolation_PrimitiveIdempotentTrace :
 def PrimitiveIdempotentTrace : ℕ := isolation_PrimitiveIdempotentTrace.survivor
 def PrimitiveIdempotentTraceRat : ℚ := (PrimitiveIdempotentTrace : ℚ)
 
-def IdempotentScalarLaw (c0 : ℚ) : Prop :=
+abbrev IdempotentScalarLaw (c0 : ℚ) : Prop :=
   SymmetricSplitRankRat * c0 = PrimitiveIdempotentTraceRat
 
 def isolation_PrimitiveIdempotentScalar : UniqueLawSolution IdempotentScalarLaw where
@@ -244,7 +244,7 @@ def isolation_PrimitiveIdempotentScalar : UniqueLawSolution IdempotentScalarLaw 
 
 def PrimitiveIdempotentScalar : ℚ := isolation_PrimitiveIdempotentScalar.survivor
 
-def IdempotentVecNormSqLaw (normSq : ℚ) : Prop :=
+abbrev IdempotentVecNormSqLaw (normSq : ℚ) : Prop :=
   PrimitiveIdempotentScalar ^ SymmetricSplitRank + normSq = PrimitiveIdempotentScalar
 
 def isolation_PrimitiveIdempotentVecNormSq : UniqueLawSolution IdempotentVecNormSqLaw where
@@ -291,9 +291,9 @@ theorem ray_metric_degeneracy (lam : ℚ) :
 -- STEP 5: Kronheimer's Hyperkähler ALE Bound (HyperkahlerSliceComplexDim)
 -- ============================================================================
 
-def CapableOfCrepantSUHolonomy (k : ℕ) : Prop := k > TimelikeSignatureRank
+abbrev CapableOfCrepantSUHolonomy (k : ℕ) : Prop := k > TimelikeSignatureRank
 
-def CapableOfSymplecticHyperkahlerHolonomy (k : ℕ) : Prop :=
+abbrev CapableOfSymplecticHyperkahlerHolonomy (k : ℕ) : Prop :=
   SymmetricSplitRank * (k * k) ≤
     k * (k + PrimitiveIdempotentTrace) + SymmetricSplitRank * PrimitiveIdempotentTrace
 
@@ -336,9 +336,9 @@ def HyperkahlerSliceComplexDim : ℕ := isolation_HyperkahlerSliceComplexDim.sur
 
 def DiagonalAxisDimension : ℕ := PrimitiveIdempotentTrace
 
-def CapableOfChiralAlternatingTorsion (m : ℕ) : Prop := m > SymmetricSplitRank
+abbrev CapableOfChiralAlternatingTorsion (m : ℕ) : Prop := m > SymmetricSplitRank
 
-def CapableOfIsolatedSliceLocalization (m : ℕ) : Prop :=
+abbrev CapableOfIsolatedSliceLocalization (m : ℕ) : Prop :=
   m ≤ HyperkahlerSliceComplexDim + DiagonalAxisDimension
 
 def isolation_ShortRootMultiplicity :
@@ -373,7 +373,7 @@ def isolation_ShortRootMultiplicity :
 
 def ShortRootMultiplicity : ℕ := isolation_ShortRootMultiplicity.survivor
 
-def AlternatingWeylIndexLaw (T : ℕ) : Prop :=
+abbrev AlternatingWeylIndexLaw (T : ℕ) : Prop :=
   SymmetricSplitRank * T = Nat.factorial ShortRootMultiplicity
 
 def isolation_ChiralWeylCyclicOrder : UniqueLawSolution AlternatingWeylIndexLaw where
@@ -398,10 +398,10 @@ def ChiralWeylCyclicOrder : ℕ := isolation_ChiralWeylCyclicOrder.survivor
 -- STEP 7: The Dimensional Uniqueness Theorem (CriticalComplexDimension = 5)
 -- ============================================================================
 
-def CapableOfGlobalNull (n : ℕ) : Prop :=
+abbrev CapableOfGlobalNull (n : ℕ) : Prop :=
   n ≥ SymmetricSplitRank + ShortRootMultiplicity
 
-def CapableOfNonZeroResidues (n : ℕ) : Prop :=
+abbrev CapableOfNonZeroResidues (n : ℕ) : Prop :=
   n ≤ SymmetricSplitRank + HyperkahlerSliceComplexDim + DiagonalAxisDimension
 
 def isolation_CriticalComplexDimension :
@@ -445,7 +445,7 @@ theorem dimensional_uniqueness_theorem :
 -- STEP 8: Downstream Horizon, Resolution, Lattice, and B₂ Weyl Invariants
 -- ============================================================================
 
-def ShilovSphereEmbedLaw (d : ℕ) : Prop :=
+abbrev ShilovSphereEmbedLaw (d : ℕ) : Prop :=
   d + TimelikeSignatureRank = CriticalComplexDimension
 
 def isolation_ShilovHorizonSphereDim : UniqueLawSolution ShilovSphereEmbedLaw where
@@ -463,7 +463,7 @@ def isolation_ShilovHorizonSphereDim : UniqueLawSolution ShilovSphereEmbedLaw wh
 
 def ShilovHorizonSphereDim : ℕ := isolation_ShilovHorizonSphereDim.survivor
 
-def McKayExceptionalCurveLaw (c_exc : ℕ) : Prop :=
+abbrev McKayExceptionalCurveLaw (c_exc : ℕ) : Prop :=
   c_exc + PrimitiveIdempotentTrace = ChiralWeylCyclicOrder
 
 def isolation_KronheimerExceptionalCurveCount : UniqueLawSolution McKayExceptionalCurveLaw where
@@ -480,8 +480,8 @@ def isolation_KronheimerExceptionalCurveCount : UniqueLawSolution McKayException
 
 def KronheimerExceptionalCurveCount : ℕ := isolation_KronheimerExceptionalCurveCount.survivor
 
-def CapableOfNonDegenerateCovering (k : ℕ) : Prop := k > NullCapacity
-def CapableOfMinimalHaarCovolume (k : ℕ) : Prop := k ≤ PrimitiveIdempotentTrace
+abbrev CapableOfNonDegenerateCovering (k : ℕ) : Prop := k > NullCapacity
+abbrev CapableOfMinimalHaarCovolume (k : ℕ) : Prop := k ≤ PrimitiveIdempotentTrace
 
 def isolation_MaximalArithmeticLatticeIndex :
     IntersectionIsolation CapableOfNonDegenerateCovering CapableOfMinimalHaarCovolume where
@@ -513,7 +513,7 @@ def MaximalArithmeticLatticeIndex : ℕ := isolation_MaximalArithmeticLatticeInd
 
 def RestrictedLongRootMultiplicity : ℕ := SymmetricSplitRank - TimelikeSignatureRank
 
-def WeylLongCoordLaw (rx : ℚ) : Prop :=
+abbrev WeylLongCoordLaw (rx : ℚ) : Prop :=
   SymmetricSplitRankRat * rx =
     ((SymmetricSplitRank * RestrictedLongRootMultiplicity + ShortRootMultiplicity : ℕ) : ℚ)
 
@@ -538,12 +538,11 @@ def isolation_RestrictedWeylVectorLongCoord : UniqueLawSolution WeylLongCoordLaw
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    push_cast
     constructor <;> intro h <;> linarith
 
 def RestrictedWeylVectorLongCoord : ℚ := isolation_RestrictedWeylVectorLongCoord.survivor
 
-def WeylShortCoordLaw (ry : ℚ) : Prop :=
+abbrev WeylShortCoordLaw (ry : ℚ) : Prop :=
   SymmetricSplitRankRat * ry = (ShortRootMultiplicity : ℚ)
 
 def isolation_RestrictedWeylVectorShortCoord : UniqueLawSolution WeylShortCoordLaw where
@@ -564,12 +563,11 @@ def isolation_RestrictedWeylVectorShortCoord : UniqueLawSolution WeylShortCoordL
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    push_cast
     constructor <;> intro h <;> linarith
 
 def RestrictedWeylVectorShortCoord : ℚ := isolation_RestrictedWeylVectorShortCoord.survivor
 
-def WeylCasimirNormSqLaw (w : ℚ) : Prop :=
+abbrev WeylCasimirNormSqLaw (w : ℚ) : Prop :=
   w = RestrictedWeylVectorLongCoord ^ SymmetricSplitRank +
       RestrictedWeylVectorShortCoord ^ SymmetricSplitRank
 
@@ -584,7 +582,7 @@ def isolation_RestrictedWeylCasimirNormSq : UniqueLawSolution WeylCasimirNormSqL
 
 def RestrictedWeylCasimirNormSq : ℚ := isolation_RestrictedWeylCasimirNormSq.survivor
 
-def ReciprocalWeylLaw (k_inv : ℚ) : Prop :=
+abbrev ReciprocalWeylLaw (k_inv : ℚ) : Prop :=
   RestrictedWeylCasimirNormSq * k_inv = PrimitiveIdempotentTraceRat
 
 def isolation_ReciprocalWeylRootInvariant : UniqueLawSolution ReciprocalWeylLaw where
