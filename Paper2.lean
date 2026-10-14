@@ -158,7 +158,6 @@ theorem sharp_pvm_idempotence_is_invalid (p : ℚ)
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
     NullCapacityRat, NullCapacity, isolation_NullCapacity] at hp_pos hp_lt ⊢
   rw [Finset.card_singleton] at hp_pos hp_lt ⊢
-  simp only [Nat.bot_eq_zero] at hp_pos ⊢
   push_cast at hp_pos hp_lt ⊢
   constructor <;> nlinarith
 
@@ -236,6 +235,6 @@ theorem isotropic_wavefront_interval_vanishes (Qu Qv Qsum : ℚ)
   dsimp [IsotropicWavefrontIntervalSq, isolation_IsotropicWavefrontIntervalSq]
   rw [hu, hv, hsum]
   dsimp [NullCapacityRat, NullCapacity, isolation_NullCapacity]
-  simp
+  ring
 
 end Paper2
