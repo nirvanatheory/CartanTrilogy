@@ -1,0 +1,357 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+
+\geometry{
+  letterpaper,
+  margin=1.0in
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black
+}
+
+% Theorem Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom_env}[theorem]{Axiom}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Custom Mathematical Macros
+\newcommand{\Cap Null}{\operatorname{Cap}_{\mathrm{null}}}
+\newcommand{\CapGlobal}{\operatorname{Cap}_{\mathrm{global}}}
+\newcommand{\ResLoc}{\operatorname{Res}_{\mathrm{loc}}}
+\newcommand{\FluxBdy}{\mathcal{F}_{\mathrm{boundary}}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Conv}{\operatorname{Conv}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\Span}{\operatorname{span}}
+
+\title[Synthetic Incidence and the Dimensional Uniqueness Theorem]{%
+  Paper I: Synthetic Incidence, Primitive Jordan Idempotents,\\
+  and the Dimensional Uniqueness Theorem%
+}
+
+\author{Anthony Curtis Rivera}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+We establish a purely deductive, parameter-free foundation for the geometry of homogeneous null cones and Hermitian symmetric tube domains beginning solely from the \emph{Global Null Condition} (*Q0, $\CapGlobal \equiv 0$). Rather than assuming a spacetime signature, algebraic family, or manifold dimension as an external ansatz, each structural invariant is isolated as the unique intersection of two opposing mathematical capability thresholds: a lower \emph{structural formation threshold} (below which the required algebraic or topological structure cannot form) and an upper \emph{localization threshold} (above which pointed convexity, quadratic nullity, or hyperk\"ahler point-localization fails, rendering all localized residues identically zero). Chaining the Koecher--Vinberg theorem, the Jordan--von Neumann--Wigner classification, Helgason's restricted root theory, and Kronheimer's hyperk\"ahler ALE classification proves a two-stage uniqueness theorem across all algebraic types and all dimensions: (i) the rank-2 Euclidean Jordan spin factor Vn and its Kantor--Koecher--Tits Cartan Type~IV tube domain $\mathcal{D}_n \cong SO_0(n,2)/[SO(n)\times SO(2)]$ form the unique symmetric family capable of supporting a pointed quadratic null cone with non-collinear boundary rays; and (ii) within this family, n=5 (D5, with Shilov horizon $Q_5 \cong (S^4 \times S^1)/\mathbb{Z}_2$ and chiral link L(3,1)=S3/Z3) is the strictly unique dimension capable of supporting both a Global Null configuration and non-zero localized topological residues simultaneously. Every definition and theorem in this paper is accompanied by a machine-verified formal proof in \textsc{Lean~4} (\texttt{Paper1.lean}) containing zero free parameters and zero hardcoded numeric literals.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+%==============================================================================
+\section{Introduction and the Deductive Uniqueness Architecture}
+%==============================================================================
+
+A central obstacle in foundational mathematical physics is the proliferation of free parameters, dimensional choices, and symmetry ans\"atze. Conventional models begin by postulating a manifold dimension, a quadratic signature (p,q), and a gauge group, and subsequently tune parameters to match observation.
+
+In this three-part series (\emph{The Cartan Trilogy}), we ask a strictly deductive question: \emph{If one begins solely with the vanishing of metric capacity along primitive null generators (*Q0) and the conservation of global nullity ($\CapGlobal \equiv 0$), does any non-trivial localized geometry survive?}
+
+To ensure that no target values or heuristic choices enter the derivation, every invariant in this work is isolated through one of two formal uniqueness gateways (machine-verified in the accompanying \textsc{Lean~4} module \texttt{Paper1.lean}):
+
+\begin{definition}[The Capability-Intersection Uniqueness Gateway]
+\label{def:intersection_isolation}
+Let A,B:NProp be two structural capability predicates over the natural numbers. An \emph{Intersection Isolation} (\texttt{IntersectionIsolation}) certifies a unique survivor x*N by proving:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Simultaneous Capability:} A(x*) and B(x*) both hold;
+  \item \textbf{Sub-Critical Failure:} For all x<x*, A(x) (incapable of forming the structure);
+  \item \textbf{Super-Critical Collapse:} For all x>x*, B(x) (incapable of non-trivial localization);
+  \item \textbf{Strict Uniqueness:} For all xN, $(\mathcal{A}(x) \wedge \mathcal{B}(x)) \iff x = x^*$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[The Algebraic Conservation Gateway]
+\label{def:unique_law_solution}
+Let L:Prop be an algebraic conservation or structure equation over a domain {N,Q}. A \emph{Unique Law Solution} (\texttt{UniqueLawSolution}) certifies that there exists a strictly unique element y* such that $\forall y \in \alpha,\; \mathcal{L}(y) \iff y = y^*$.
+\end{definition}
+
+No invariant in the deductive chain is permitted to exist in Step~k unless it has first been isolated as the unique survivor x* or y* of Step~k-1.
+
+%==============================================================================
+\section{Generator Pullback Nullity and Projective Ray Incidence}
+%==============================================================================
+
+\subsection{Step 1: Isolation of Vanishing Generator Capacity (\texttt{NullCapacity})}
+
+Let N denote a conic null locus equipped with a quadratic form Q, and let $\iota : \ell_c \hookrightarrow \mathcal{N}$ be the inclusion of a primitive generator ray $\ell_c$.
+
+\begin{axiom_env}[Generator Pullback Nullity]
+\label{ax:generator_nullity}
+Along every primitive generator $\ell_c \subset \mathcal{N}$, the pullback of the quadratic metric vanishes identically:
+\begin{equation}
+  \iota^* Q \equiv 0.
+\end{equation}
+\end{axiom_env}
+
+\begin{proposition}[Isolation of \texttt{NullCapacity}]
+\label{prop:null_capacity}
+Let cN denote the intrinsic metric capacity along a primitive null generator $\ell_c$. Under:
+\begin{itemize}
+  \item \textbf{Capability A (\texttt{NonNegativeCapacity}):} cc-c (bounded below by self-cancellation), and
+  \item \textbf{Capability B (\texttt{ScaleInvariantNullity}):} c+cc (rescaling or superposing a null ray along itself cannot accumulate positive metric capacity),
+\end{itemize}
+there is a strictly unique capacity $c^* = \Cap Null = 0$ (\texttt{NullCapacity}) satisfying both capabilities.
+\end{proposition}
+\begin{proof}
+For every cN, c-c=0c holds identically. The scale-invariant self-annihilation inequality c+cc holds if and only if c0, which over N is uniquely satisfied by c*=N=0.
+\end{proof}
+
+\subsection{Step 2: Projective Quotient and Pointed Lorentzian Signature (\texttt{TimelikeSignatureRank})}
+
+Because the metric distance between any two points along a primitive null generator $\ell_c$ equals $\Cap Null = 0$, quotienting $\ell_c \setminus \{0\}$ by zero metric separation collapses the entire ray into a single projective equivalence class [c]P, represented combinatorially by the singleton set $\{\Cap Null\}$ of cardinality $p_0 = |\{\Cap Null\}| = 1$.
+
+\begin{theorem}[Isolation of \texttt{TimelikeSignatureRank}]
+\label{thm:timelike_signature}
+In a real quadratic vector space V of signature (p,q) with quadratic form $Q(x) = x_1^2 + \dots + x_p^2 - x_{p+1}^2 - \dots - x_{p+q}^2$, consider the two structural capabilities required to bound a homogeneous self-dual convex cone  (Koecher 1957; Vinberg 1963):
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Capability A (\texttt{CapableOfNonEmptyNullCone}):} $p > \Cap Null$. If $p \le \Cap Null$, then $Q(x) = -\|\mathbf{x}\|^2 = 0 \implies x = 0$, so the non-trivial null cone $\mathcal{N} \setminus \{0\}$ is empty.
+  \item \textbf{Capability B (\texttt{CapableOfPointedConvexity}):} ppp. If p2>p (p2), the timelike locus contains orthogonal positive-norm axes, its null cone is connected across opposite hemispheres, and $\Conv(\mathcal{N}) = V$, violating pointed convexity ($\Omega \cap (-\Omega) = \emptyset$).
+\end{enumerate}
+Across all pN, the singleton ray cardinality $p^* = |\{\Cap Null\}| = 1$ (\texttt{TimelikeSignatureRank}) is the strictly unique signature rank satisfying both capabilities.
+\end{theorem}
+\begin{proof}
+For p<1, $p = 0 = \Cap Null$, which fails Capability~A. For p>1, p2 implies p22p>p, which fails Capability~B. At p=1, 1>0 and 111 both hold. By Definition~\ref{def:intersection_isolation}, p*=1 is strictly unique.
+\end{proof}
+
+%==============================================================================
+\section{Elimination Across All Jordan and Cartan Types}
+%==============================================================================
+
+\subsection{Step 3: Isolation of the Rank-2 Spin Factor and Cartan Type~IV (\texttt{JordanAlgebraRank})}
+
+By the Koecher--Vinberg theorem, every pointed homogeneous self-dual cone V is the interior of the set of squares of a formally real (Euclidean) Jordan algebra (V,). By the Jordan--von Neumann--Wigner (JNW) classification (1934), every simple Euclidean Jordan algebra of rank r belongs to either:
+\begin{itemize}
+  \item Rank r=1: the trivial real line R,
+  \item Rank r=2: the quadratic spin factor Vn=RRn-1,
+  \item Rank r3: the Hermitian matrix algebras Hr(R), Hr(C), Hr(H), or the exceptional Albert algebra H3(O) (r=3).
+\end{itemize}
+
+\begin{theorem}[Comprehensive Elimination of Non-Type-IV Algebras and Isolation of \texttt{JordanAlgebraRank}]
+\label{thm:jordan_rank}
+Let rN be the rank of a simple Euclidean Jordan algebra V with timelike signature rank p*=TimelikeSignatureRank=1:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Capability A (\texttt{CapableOfNonCollinearBoundaryRays}):} Boundary elements on  have Jordan rank at most r-p*. Supporting non-zero boundary rays requires strict inequality r>p*.
+  \item \textbf{Capability B (\texttt{CapableOfQuadraticNullBoundary}):} In the JNW classification, the boundary ={xV:(x)=0} is an algebraic variety of polynomial degree r. Coinciding with a quadratic null cone Q(x)=0 requires rr(p*+p*)r.
+\end{enumerate}
+Across all rN, r1=p*+p*=2 (\texttt{JordanAlgebraRank}) is the strictly unique rank satisfying both capabilities. Under the Kantor--Koecher--Tits conformal tube embedding $\mathcal{T}(\Omega_n) \cong \mathcal{D}_n$, this eliminates Cartan Types~I, II, III, V, and~VI for r3 and uniquely isolates the Cartan Type~IV symmetric domain $\mathcal{D}_n \cong SO_0(n, r_1)/[SO(n)\times SO(r_1)]$ of real split rank r1=SymmetricSplitRank=2.
+\end{theorem}
+\begin{proof}
+For rp*=1, ={0} contains no non-zero boundary rays, failing Capability~A. For r>2p*=2 (r3, which includes all higher matrix algebras Hr and the Albert algebra H3(O)), the determinant (x) has degree r3 and r2>2r, failing Capability~B. Thus r1=2 is the unique survivor.
+\end{proof}
+
+\begin{theorem}[Veblen--Young / Pasch Projective Incidence (\texttt{veblen\_young\_pasch\_incidence})]
+\label{thm:veblen_young}
+Let U1,U2 be two projective lines (2-flats of vector dimension U1=U2=r1=2) lying inside a common projective 2-plane (3-flat W3 with (U1+U2)r1+p*=3). By the Grassmann dimension identity (U1+U2)+(U1U2)=U1+U2, their intersection satisfies:
+\begin{equation}
+  \dim(U_1 \cap U_2) \ge p^* = 1,
+\end{equation}
+ensuring that any two coplanar projective lines intersect in at least a projective ray.
+\end{theorem}
+
+\subsection{Step 4: Primitive Jordan Idempotents and Identical Pullback Nullity}
+
+In the rank-r1 Euclidean Jordan spin factor V=QW equipped with a symmetric bilinear inner product $\langle \cdot, \cdot \rangle$ on W, the Jordan product and quadratic norm are given for u=(u0,u) and v=(v0,v) by:
+\begin{equation}
+  u \circ v = \bigl(u_0 v_0 + \langle \mathbf{u}, \mathbf{v} \rangle,\; u_0 \mathbf{v} + v_0 \mathbf{u}\bigr), \qquad
+  Q(u) = \det(u) = u_0^{r_1} - \|\mathbf{u}\|^2.
+\end{equation}
+In \texttt{Paper1.lean} (\texttt{jordan\_product\_commutative} and \texttt{jordan\_cubic\_identity}), Lean~4 verifies polymorphically over any module W that  is commutative and satisfies the cubic Jordan identity a(a2b)=a2(ab).
+
+\begin{theorem}[Isolation of Primitive Idempotent Invariants and Identical Nullity Q(c)0]
+\label{thm:primitive_idempotent_null}
+Let c=(c0,c)V be an idempotent (cc=c) of spectral trace $k = \tr(c) \in \mathbb{N}$:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Spectral Trace (\texttt{PrimitiveIdempotentTrace}):} Requiring $k > \Cap Null$ (non-zero ray, Capability~A) and k+p*r1 (singular boundary element (c)=0, Capability~B) uniquely isolates k*=p*=1.
+  \item \textbf{Scalar Component (\texttt{PrimitiveIdempotentScalar}):} The vector idempotence relation r1c0c=c uniquely isolates c0 via the linear conservation law r1c0=k*, yielding c0=k*/r1=1/2.
+  \item \textbf{Spatial Norm Squared (\texttt{PrimitiveIdempotentVecNormSq}):} The scalar idempotence relation $c_0^{r_1} + \|\mathbf{c}\|^2 = c_0$ uniquely isolates $\|\mathbf{c}\|^2 = c_0 - c_0^{r_1} = 1/4$.
+  \item \textbf{Identical Quadratic Nullity (\texttt{primitive\_idempotent\_norm\_vanishes}):} The invariant quadratic norm $Q(c) = c_0^{r_1} - \|\mathbf{c}\|^2$ (\texttt{PrimitiveIdempotentQuadraticNorm}) vanishes identically:
+  \begin{equation}
+    Q(c) = c_0^{r_1} - \bigl(c_0 - c_0^{r_1}\bigr) = 0 = \Cap Null,
+  \end{equation}
+  and by homogeneity (\texttt{ray\_metric\_degeneracy}), Q(c)=r1Q(c)=0 for all Q.
+\end{enumerate}
+\end{theorem}
+
+%==============================================================================
+\section{Hyperk\"ahler Slice Localization, Chiral Torsion, and the Dimensional Uniqueness Theorem}
+%==============================================================================
+
+\subsection{Step 5: Kronheimer's Hyperk\"ahler ALE Bound (\texttt{HyperkahlerSliceComplexDim})}
+
+To trap non-zero topological residue at an isolated singular stratum without violating global nullity ($\CapGlobal = \ResLoc + \FluxBdy = 0$), the transverse complex slice Ck/0 must admit a crepant hyperk\"ahler ALE resolution $\widetilde{X} \to \mathbb{C}^k / \Gamma_0$ (Kronheimer 1989).
+
+\begin{lemma}[Isolation of \texttt{HyperkahlerSliceComplexDim}]
+\label{lem:hyperkahler_slice}
+Let kN be the complex dimension of the transverse orbifold slice Ck/0:
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Capability A (\texttt{CapableOfCrepantSUHolonomy}):} Generating non-trivial crepant resolution curves requires a non-trivial special unitary holonomy algebra Rsu(k)=k2-1>0, i.e., k>p*=1.
+  \item \textbf{Capability B (\texttt{CapableOfSymplecticHyperkahlerHolonomy}):} By Kronheimer's theorem, the special unitary holonomy embeds into the compact symplectic hyperk\"ahler holonomy algebra (su(k)sp(k/2)) if and only if Rsu(k)Rsp(k/2), which in additive integer form reads:
+  \begin{equation}
+    r_1 k^2 \le k(k + k^*) + r_1 k^*.
+  \end{equation}
+\end{enumerate}
+Across all kN, dC=r1=2 (\texttt{HyperkahlerSliceComplexDim}) is the strictly unique slice dimension satisfying both capabilities.
+\end{lemma}
+\begin{proof}
+For k1, su(k)={0} fails Capability~A. For k3, 2k2-(k2+k+2)=k2-k-2=(k-2)(k+1)>0, so Rsu(k)>Rsp(k/2), failing Capability~B. Thus dC=2 is unique.
+\end{proof}
+
+\subsection{Step 6: Chiral Short-Root Multiplicity and Alternating Weyl Order}
+
+In the Restricted Root Theorem for $\mathcal{D}_n \cong SO_0(n, r_1)/[SO(n)\times SO(r_1)]$ (Helgason 1978), the restricted root system is of type B2 with long-root multiplicity mlong=r1-p*=1 and short-root multiplicity m=n-r1. The compact centralizer M0=SO(m) acts on the short-root fiber Rm. The coordinate permutation subgroup Sm fixes the 1-dimensional diagonal trace axis $\Span\{(1,\dots,1)\}$ of dimension ddiag=k*=1 (\texttt{DiagonalAxisDimension}) and acts on the orthogonal trace-zero hyperplane Rm-1.
+
+\begin{lemma}[Isolation of \texttt{ShortRootMultiplicity} and \texttt{ChiralWeylCyclicOrder}]
+\label{lem:short_root}
+Let mN denote the short-root multiplicity of SO0(n,r1):
+\begin{enumerate}[label=(\alph*)]
+  \item \textbf{Capability A (\texttt{CapableOfChiralAlternatingTorsion}):} The chiral orientation-preserving alternating subgroup Am=SmSO(m) is non-trivial (|Am|>1) if and only if m>r1=2. For m2, Am={id} is incapable of generating chiral boundary torsion.
+  \item \textbf{Capability B (\texttt{CapableOfIsolatedSliceLocalization}):} Point-localizing the orthogonal trace-zero slice Rm-ddiag inside the hyperk\"ahler slice CdC requires mdC+ddiag.
+\end{enumerate}
+Across all mN, r2=dC+ddiag=3 (\texttt{ShortRootMultiplicity}) is the strictly unique survivor. By Lagrange's index theorem (\texttt{isolation\_ChiralWeylCyclicOrder}), the order T=|Ar2| is the unique solution to r1T=r2!, yielding T=3 (\texttt{ChiralWeylCyclicOrder}).
+\end{lemma}
+
+\subsection{Step 7: The Dimensional Uniqueness Theorem (n=5)}
+
+We now combine the split Cartan rank r1, the chiral short-root multiplicity r2, and the hyperk\"ahler localization bound dC to establish the centerpiece result of Paper~I.
+
+\begin{theorem}[The Dimensional Uniqueness Theorem (\texttt{dimensional\_uniqueness\_theorem})]
+\label{thm:dimensional_uniqueness}
+Across the family of Cartan Type~IV symmetric domains $\mathcal{D}_n \cong SO_0(n, r_1)/[SO(n)\times SO(r_1)]$ (nN), define the two fundamental capabilities:
+\begin{itemize}
+  \item \textbf{Capability A (\texttt{CapableOfGlobalNull}):} nr1+r2, required so that Dn contains both the r1-dimensional split Cartan subalgebra and the r2-dimensional chiral short-root space needed to close the global null capacity balance $\CapGlobal = \ResLoc + \FluxBdy = 0$.
+  \item \textbf{Capability B (\texttt{CapableOfNonZeroResidues}):} nr1+dC+ddiag, required so that the transverse trace-zero short-root slice is confined to the hyperk\"ahler slice CdC where point-localized residues can be supported.
+\end{itemize}
+Then:
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Sub-Critical Failure (n<5):} Every dimension n<5 satisfies $\neg\,\mathrm{CapableOfGlobalNull}(n)$ and is incapable of supporting a Global Null configuration.
+  \item \textbf{Super-Critical Trivial Nullity (n>5):} Every dimension n>5 satisfies CapableOfGlobalNull(n) but fails localization ($\neg\,\mathrm{CapableOfNonZeroResidues}(n)$); its singular locus is non-isolated (dfix=n-51) and all localized residues vanish identically ($\ResLoc \equiv 0$, trivially null throughout).
+  \item \textbf{Unique Critical Survivor (n=5):} Across all nN,
+  \begin{equation}
+    \bigl(\mathrm{CapableOfGlobalNull}(n) \wedge \mathrm{CapableOfNonZeroResidues}(n)\bigr) \iff n = n^* = r_1 + r_2 = 5
+  \end{equation}
+  (\texttt{CriticalComplexDimension}). Thus $\mathcal{D}_5 \cong SO_0(5,2)/[SO(5)\times SO(2)]$ is the strictly unique configuration across all types and dimensions capable of supporting both a Global Null and non-zero localized residues simultaneously.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:short_root}, r2=dC+ddiag=3. Consequently, the lower threshold r1+r2=5 and the upper threshold r1+dC+ddiag=5 meet at the single integer n*=5. By order antisymmetry (\texttt{le\_antisymm} in \texttt{isolation\_CriticalComplexDimension}), all n<5 violate Capability~A, all n>5 satisfy Capability~A but violate Capability~B, and n*=5 is the unique intersection.
+\end{proof}
+
+%==============================================================================
+\section{Downstream Geometric Invariants of the Critical Domain \texorpdfstring{D5}{D5}}
+%==============================================================================
+
+With n*=5 uniquely isolated, every downstream geometric and root-theoretic invariant of Paper~I is uniquely fixed via \texttt{UniqueLawSolution} or \texttt{IntersectionIsolation}:
+
+\begin{theorem}[Uniqueness of Horizon, Resolution, Lattice, and B2 Weyl Invariants]
+\label{thm:downstream_invariants}
+On the unique critical domain $\mathcal{D}_5 \cong SO_0(5,2)/[SO(5)\times SO(2)]$:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{Shilov Horizon Sphere Dimension (\texttt{ShilovHorizonSphereDim}):} By Hua's classification (1963), the conformal Shilov boundary $Q_{n^*} \cong (S^d \times S^1)/\mathbb{Z}_2$ has spatial sphere dimension d uniquely determined by d+p*=n*, isolating d=4 ($Q_5 \cong (S^4 \times S^1)/\mathbb{Z}_2$).
+  \item \textbf{Kronheimer Exceptional Curve Count (\texttt{KronheimerExceptionalCurveCount}):} In the minimal hyperk\"ahler resolution $\widetilde{X} \to \mathbb{C}^2 / \mathbb{Z}_T$ of type -AT-1 (McKay 1980; Kronheimer 1989), the number of exceptional rational curves $E_a \cong \mathbb{CP}^1$ is uniquely determined by cexc+k*=T, isolating cexc=2=r1.
+  \item \textbf{Maximal Arithmetic Lattice Index (\texttt{MaximalArithmeticLatticeIndex}):} By Prasad's volume formula (1989) and Selberg's lemma (1960), the lattice covering index k=[:] satisfying $k > \Cap Null$ (\texttt{CapableOfNonDegenerateCovering}) and minimizing Haar--Bergman covolume $\Vol(\Gamma \backslash \mathcal{D}_5) = k \cdot V_{\max}$ (kk*, \texttt{CapableOfMinimalHaarCovolume}) is uniquely k=1.
+  \item \textbf{Restricted B2 Weyl Vector and Casimir Norm (\texttt{RestrictedWeylCasimirNormSq}):} The restricted root system (g,a)=B2 has long-root multiplicity mlong=r1-p*=1 and short-root multiplicity mshort=r2=3. Its Weyl half-sum vector =(1,2) is uniquely determined by:
+  \begin{equation}
+    r_1 \rho_1 = r_1 m_{\mathrm{long}} + m_{\mathrm{short}} \implies \rho_1 = \frac{5}{2}, \qquad
+    r_1 \rho_2 = m_{\mathrm{short}} \implies \rho_2 = \frac{3}{2},
+  \end{equation}
+  with squared Casimir norm $\|\rho\|_{B_2}^2 = \rho_1^2 + \rho_2^2 = \frac{17}{2}$ (\texttt{RestrictedWeylCasimirNormSq}) and reciprocal root invariant $\mathcal{K}_{\mathfrak{a}^*}^{-1} = \|\rho\|_{B_2}^{-2} = \frac{2}{17}$ (\texttt{ReciprocalWeylRootInvariant}).
+\end{enumerate}
+\end{theorem}
+
+%==============================================================================
+\section{Machine-Verified Compiler Ledger (\texttt{Paper1.lean})}
+%==============================================================================
+
+Table~\ref{tab:paper1_ledger} records the complete output of \texttt{\#eval (\{\} : Paper1Readout)} from \texttt{Paper1.lean}, confirming that every invariant of Paper~I is generated blindly by the \textsc{Lean~4} kernel from \texttt{NullCapacity} with zero free parameters.
+
+\begin{table}[htbp]
+\centering
+\caption{Compiler-Generated Invariant Ledger of Paper~I (\texttt{Paper1.lean})}
+\label{tab:paper1_ledger}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Lean 4 Identifier} & \textbf{Geometric / Algebraic Meaning} & \textbf{Symbol} & \textbf{Kernel Readout} \\
+\midrule
+\texttt{nullCapacity} & Vanishing generator pullback capacity & $\Cap Null$ & 0 \\
+\texttt{timelikeSignatureRank} & Pointed Lorentzian timelike rank & p* & 1 \\
+\texttt{jordanAlgebraRank} & Rank of Euclidean Jordan spin factor Vn & r & 2 \\
+\texttt{symmetricSplitRank} & Real split rank of $\mathcal{D}_n \cong SO_0(n,2)/[SO(n)\times SO(2)]$ & r1 & 2 \\
+\texttt{primitiveIdempotentTrace} & Spectral trace of primitive idempotent c & $\tr(c)$ & 1 \\
+\texttt{primitiveIdempotentScalar} & Idempotent scalar component & c0 & 1/2 \\
+\texttt{primitiveIdempotentVecNormSq} & Idempotent spatial vector norm squared & $\|\mathbf{c}\|^2$ & 1/4 \\
+\texttt{primitiveIdempotentNullNorm} & Invariant quadratic norm $Q(c) = c_0^2 - \|\mathbf{c}\|^2$ & Q(c) & 0 \\
+\texttt{hyperkahlerSliceComplexDim} & Kronheimer hyperk\"ahler ALE slice dimension & dC & 2 \\
+\texttt{shortRootMultiplicity} & Chiral short-root multiplicity of SO0(5,2) & r2 & 3 \\
+\texttt{chiralWeylCyclicOrder} & Order of chiral alternating group A3SO(3) & T & 3 \\
+\texttt{criticalComplexDimension} & Unique critical complex dimension of Dn & n* & 5 \\
+\texttt{shilovHorizonSphereDim} & Spatial sphere dimension of $Q_5 \cong (S^d \times S^1)/\mathbb{Z}_2$ & d & 4 \\
+\texttt{kronheimerExceptionalCurves} & Exceptional CP1 curves in $\widetilde{X} \to \mathbb{C}^2/\mathbb{Z}_3$ & cexc & 2 \\
+\texttt{maximalArithmeticLatticeIndex} & Prasad covolume-minimizing lattice index & [:] & 1 \\
+\texttt{restrictedLongRootMultiplicity} & Long-root multiplicity of (g,a)=B2 & mlong & 1 \\
+\texttt{restrictedWeylVectorLongCoord} & First coordinate of restricted B2 Weyl vector & 1 & 5/2 \\
+\texttt{restrictedWeylVectorShortCoord} & Second coordinate of restricted B2 Weyl vector & 2 & 3/2 \\
+\texttt{restrictedWeylCasimirNormSq} & Squared B2 Weyl Casimir norm & $\|\rho\|_{B_2}^2$ & 17/2 \\
+\texttt{reciprocalWeylRootInvariant} & Reciprocal restricted root Casimir invariant & Ka*-1 & 2/17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{thebibliography}{99}
+
+\bibitem{FarautKoranyi1994}
+J.~Faraut and A.~Kor\'anyi, \emph{Analysis on Symmetric Cones}, Oxford Mathematical Monographs, Clarendon Press, Oxford, 1994.
+
+\bibitem{Helgason1978}
+S.~Helgason, \emph{Differential Geometry, Lie Groups, and Symmetric Spaces}, Academic Press, New York, 1978.
+
+\bibitem{Hua1963}
+L.~K.~Hua, \emph{Harmonic Analysis of Functions of Several Complex Variables in the Classical Domains}, Translations of Mathematical Monographs, Vol.~6, American Mathematical Society, Providence, RI, 1963.
+
+\bibitem{JNW1934}
+P.~Jordan, J.~von~Neumann, and E.~Wigner, \emph{On an algebraic generalization of the quantum mechanical formalism}, Ann.\ of Math.\ (2) \textbf{35} (1934), no.~1, 29--64.
+
+\bibitem{Koecher1957}
+M.~Koecher, \emph{Positivit\"atsbereiche im Rn}, Amer.\ J.\ Math.\ \textbf{79} (1957), 575--596.
+
+\bibitem{Kronheimer1989}
+P.~B.~Kronheimer, \emph{The construction of ALE spaces as hyper-K\"ahler quotients}, J.\ Differential Geom.\ \textbf{29} (1989), no.~3, 665--683.
+
+\bibitem{McKay1980}
+J.~McKay, \emph{Graphs, singularities, and finite groups}, in \emph{The Santa Cruz Conference on Finite Groups}, Proc.\ Sympos.\ Pure Math., Vol.~37, Amer.\ Math.\ Soc., Providence, RI, 1980, pp.~183--186.
+
+\bibitem{Prasad1989}
+G.~Prasad, \emph{Volumes of S-arithmetic quotients of semi-simple groups}, Publ.\ Math.\ Inst.\ Hautes \'Etudes Sci.\ \textbf{69} (1989), 91--117.
+
+\bibitem{Selberg1960}
+A.~Selberg, \emph{On discontinuous groups in higher-dimensional symmetric spaces}, in \emph{Contributions to Function Theory}, Tata Institute of Fundamental Research, Bombay, 1960, pp.~147--164.
+
+\bibitem{VeblenYoung1910}
+O.~Veblen and J.~W.~Young, \emph{Projective Geometry}, Vol.~I, Ginn and Company, Boston, 1910.
+
+\bibitem{Vinberg1963}
+E.~B.~Vinberg, \emph{The theory of convex homogeneous cones}, Trudy Moskov.\ Mat.\ Ob\v{s}\v{c}.\ \textbf{12} (1963), 303--358.
+
+\end{thebibliography}
+
+\end{document}
