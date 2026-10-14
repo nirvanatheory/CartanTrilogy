@@ -23,15 +23,7 @@ def CapableOfShilovBoundaryConcentration (p : ℕ) : Prop :=
 def isolation_CartanDomainGenus :
     IntersectionIsolation CapableOfPositiveBoundaryMeasure CapableOfShilovBoundaryConcentration where
   survivor := CriticalComplexDimension
-  capable_A := by
-    dsimp [CapableOfPositiveBoundaryMeasure, CriticalComplexDimension,
-      isolation_CriticalComplexDimension, RestrictedLongRootMultiplicity,
-      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, SymmetricSplitRank, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
   capable_B := by
     dsimp [CapableOfShilovBoundaryConcentration]
     omega
@@ -44,7 +36,6 @@ def isolation_CartanDomainGenus :
       isolation_PrimitiveIdempotentTrace, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton] at hp hA
-    rw [Finset.card_singleton] at hp hA
     omega
   super_critical_incapable := by
     intro p hp hB
@@ -59,7 +50,6 @@ def isolation_CartanDomainGenus :
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     omega
 
 def CartanDomainGenus : ℕ := isolation_CartanDomainGenus.survivor
@@ -109,7 +99,6 @@ def isolation_CauchySzegoHardyExponent : UniqueLawSolution CauchySzegoHardyLaw w
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -130,7 +119,6 @@ def isolation_AntiHolomorphicFourierLeakage (p : ℚ) :
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     ring
   unique_survivor := by
@@ -139,7 +127,6 @@ def isolation_AntiHolomorphicFourierLeakage (p : ℚ) :
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -157,7 +144,6 @@ theorem sharp_pvm_idempotence_is_invalid (p : ℚ)
     JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
     NullCapacityRat, NullCapacity, isolation_NullCapacity] at hp_pos hp_lt ⊢
-  rw [Finset.card_singleton] at hp_lt ⊢
   push_cast at hp_pos hp_lt ⊢
   constructor <;> nlinarith
 
@@ -195,7 +181,6 @@ def isolation_RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     push_cast
     ring
   unique_survivor := by
@@ -205,7 +190,6 @@ def isolation_RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
