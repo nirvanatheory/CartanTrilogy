@@ -24,22 +24,8 @@ def CapableOfEmbeddingSingularLensLink (c : ℕ) : Prop :=
 def isolation_InvolutiveSubquadricCodim :
     IntersectionIsolation CapableOfNormalFluxConfinement CapableOfEmbeddingSingularLensLink where
   survivor := TimelikeSignatureRank
-  capable_A := by
-    dsimp [CapableOfNormalFluxConfinement, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    decide
-  capable_B := by
-    dsimp [CapableOfEmbeddingSingularLensLink, ShilovHorizonSphereDim,
-      isolation_ShilovHorizonSphereDim, CriticalComplexDimension,
-      isolation_CriticalComplexDimension, ShortRootMultiplicity,
-      isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-      PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
-      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro c hc hA
     dsimp [CapableOfNormalFluxConfinement, TimelikeSignatureRank,
@@ -82,16 +68,7 @@ def CauchySliceCodimLaw (d_s : ℕ) : Prop :=
 
 def isolation_CauchySpatialSphereDim : UniqueLawSolution CauchySliceCodimLaw where
   survivor := ShilovHorizonSphereDim - InvolutiveSubquadricCodim
-  satisfies_law := by
-    dsimp [CauchySliceCodimLaw, ShilovHorizonSphereDim, isolation_ShilovHorizonSphereDim,
-      InvolutiveSubquadricCodim, isolation_InvolutiveSubquadricCodim,
-      CriticalComplexDimension, isolation_CriticalComplexDimension, ShortRootMultiplicity,
-      isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, SymmetricSplitRank, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  satisfies_law := by decide
   unique_survivor := by
     intro d_s
     dsimp [CauchySliceCodimLaw, ShilovHorizonSphereDim, isolation_ShilovHorizonSphereDim,
@@ -132,12 +109,7 @@ def CapableOfAbelianUnipotentClosure (k : ℕ) : Prop := k ≤ RestrictedLongRoo
 def isolation_ParabolicUnipotentTerminationDegree :
     IntersectionIsolation CapableOfNonTrivialNilpotentTransport CapableOfAbelianUnipotentClosure where
   survivor := RestrictedLongRootMultiplicity
-  capable_A := by
-    dsimp [CapableOfNonTrivialNilpotentTransport, RestrictedLongRootMultiplicity,
-      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
-    decide
+  capable_A := by decide
   capable_B := by
     dsimp [CapableOfAbelianUnipotentClosure]
     omega
@@ -175,24 +147,16 @@ def isolation_ExteriorAlgebraTerminationDegree :
   capable_A := by
     dsimp [CapableOfTopDeterminantCalibration]
     omega
-  capable_B := by
-    dsimp [CapableOfNonZeroExteriorGrade, ShortRootMultiplicity,
-      isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-      PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
-      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
-    decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro k hk hA
     dsimp [CapableOfTopDeterminantCalibration] at hA
     omega
   super_critical_incapable := by
     intro k hk hB
-    dsimp [CapableOfNonZeroExteriorGrade] at hB
-    have hchoose : Nat.choose ShortRootMultiplicity k = ⊥ := by
-      rw [Nat.bot_eq_zero]
+    unfold CapableOfNonZeroExteriorGrade at hB
+    have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
+      rw [NullCapacity_val, Nat.bot_eq_zero]
       exact Nat.choose_eq_zero_of_lt hk
     rw [hchoose] at hB
     exact (lt_irrefl _ hB).elim
@@ -204,22 +168,15 @@ def isolation_ExteriorAlgebraTerminationDegree :
       have hgt : k > ShortRootMultiplicity := by
         dsimp [CapableOfTopDeterminantCalibration] at hA
         omega
-      dsimp [CapableOfNonZeroExteriorGrade] at hB
-      have hchoose : Nat.choose ShortRootMultiplicity k = ⊥ := by
-        rw [Nat.bot_eq_zero]
+      unfold CapableOfNonZeroExteriorGrade at hB
+      have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
+        rw [NullCapacity_val, Nat.bot_eq_zero]
         exact Nat.choose_eq_zero_of_lt hgt
       rw [hchoose] at hB
       exact lt_irrefl _ hB
     · intro hk
       subst hk
       refine ⟨by dsimp [CapableOfTopDeterminantCalibration]; omega, ?_⟩
-      dsimp [CapableOfNonZeroExteriorGrade, ShortRootMultiplicity,
-        isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-        isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-        PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
-        SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-        TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-        SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
       decide
 
 def ExteriorAlgebraTerminationDegree : ℕ :=
@@ -407,33 +364,7 @@ theorem master_trilogy_relational_laws_verified :
     UnpuncturedWeylHorizonTrace - MaximalLagrangianLinkDefect = SingularLinkKernelIndex ∧
     LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
     MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · decide
-  · dsimp [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect,
-      applyCurvedHorizonOp, NullCapacityRat, NullCapacity, isolation_NullCapacity]
-    push_cast
-    ring
-  · dsimp [MaximalLagrangianLinkDefect]
-    ring
-  · dsimp [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight,
-      LinkAPSSpectralAsymmetry, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
-      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
-      JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    norm_num
-  · dsimp [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight,
-      HorizonSphereScalarCurvature, ShilovHorizonSphereDim, isolation_ShilovHorizonSphereDim,
-      CriticalComplexDimension, isolation_CriticalComplexDimension,
-      LinkAPSSpectralAsymmetry, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
-      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-      PrimitiveIdempotentTraceRat, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
-      JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    norm_num
+  refine ⟨by decide, by decide, by decide, by decide, by decide⟩
 
 -- ============================================================================
 -- MASTER COMPILER READOUT LEDGER FOR THE COMPLETE TRILOGY
