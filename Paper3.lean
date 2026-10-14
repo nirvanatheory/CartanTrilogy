@@ -46,7 +46,6 @@ def isolation_InvolutiveSubquadricCodim :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hc hA
     rw [Finset.card_singleton] at hc
-    change c > c - c at hA
     omega
   super_critical_incapable := by
     intro c hc hB
@@ -73,10 +72,6 @@ def isolation_InvolutiveSubquadricCodim :
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
-    change (c > c - c ∧ c + (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card) ≤
-      (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card) - ({⊥} : Finset ℕ).card)) ↔
-      c = ({⊥} : Finset ℕ).card
     rw [Finset.card_singleton]
     omega
 
@@ -153,7 +148,6 @@ def isolation_ParabolicUnipotentTerminationDegree :
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity] at hk hA
     rw [Finset.card_singleton] at hk
-    change k > k - k at hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -165,9 +159,6 @@ def isolation_ParabolicUnipotentTerminationDegree :
       RestrictedLongRootMultiplicity, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
-    change (k > k - k ∧ k ≤ ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card - ({⊥} : Finset ℕ).card) ↔
-      k = ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card - ({⊥} : Finset ℕ).card
     rw [Finset.card_singleton]
     omega
 
