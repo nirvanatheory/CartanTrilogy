@@ -14,10 +14,10 @@ open Paper1
 -- STEP 9: Isolation of the Cartan Genus and Boundary Reproducing Exponents
 -- ============================================================================
 
-def CapableOfPositiveBoundaryMeasure (p : ℕ) : Prop :=
+abbrev CapableOfPositiveBoundaryMeasure (p : ℕ) : Prop :=
   p ≥ RestrictedLongRootMultiplicity * ShortRootMultiplicity + SymmetricSplitRank
 
-def CapableOfShilovBoundaryConcentration (p : ℕ) : Prop :=
+abbrev CapableOfShilovBoundaryConcentration (p : ℕ) : Prop :=
   p ≤ CriticalComplexDimension
 
 def isolation_CartanDomainGenus :
@@ -55,7 +55,7 @@ def isolation_CartanDomainGenus :
 def CartanDomainGenus : ℕ := isolation_CartanDomainGenus.survivor
 def CartanDomainGenusRat : ℚ := (CartanDomainGenus : ℚ)
 
-def PoissonSzegoDegreeLaw (p_PS : ℕ) : Prop :=
+abbrev PoissonSzegoDegreeLaw (p_PS : ℕ) : Prop :=
   p_PS ≥ TimelikeSignatureRank ∧ p_PS - TimelikeSignatureRank = ShilovHorizonSphereDim
 
 def isolation_PoissonSzegoKernelExponent : UniqueLawSolution PoissonSzegoDegreeLaw where
@@ -70,7 +70,7 @@ def isolation_PoissonSzegoKernelExponent : UniqueLawSolution PoissonSzegoDegreeL
 
 def PoissonSzegoKernelExponent : ℕ := isolation_PoissonSzegoKernelExponent.survivor
 
-def CauchySzegoHardyLaw (k_H : ℚ) : Prop :=
+abbrev CauchySzegoHardyLaw (k_H : ℚ) : Prop :=
   SymmetricSplitRankRat * k_H = CartanDomainGenusRat
 
 def isolation_CauchySzegoHardyExponent : UniqueLawSolution CauchySzegoHardyLaw where
@@ -99,7 +99,6 @@ def isolation_CauchySzegoHardyExponent : UniqueLawSolution CauchySzegoHardyLaw w
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    push_cast
     constructor <;> intro h <;> linarith
 
 def CauchySzegoHardyExponent : ℚ := isolation_CauchySzegoHardyExponent.survivor
@@ -108,7 +107,7 @@ def CauchySzegoHardyExponent : ℚ := isolation_CauchySzegoHardyExponent.survivo
 -- STEP 10: Berezin–Toeplitz POVM Quantization and Anti-Holomorphic Leakage
 -- ============================================================================
 
-def AntiHolomorphicLeakageLaw (p w_perp : ℚ) : Prop :=
+abbrev AntiHolomorphicLeakageLaw (p w_perp : ℚ) : Prop :=
   SymmetricSplitRankRat * w_perp = p * (PrimitiveIdempotentTraceRat - p)
 
 def isolation_AntiHolomorphicFourierLeakage (p : ℚ) :
@@ -151,7 +150,7 @@ theorem sharp_pvm_idempotence_is_invalid (p : ℚ)
 -- STEP 11: Complementary POVM Amplitude, Radon–Nikodym Weight, Isotropic Nullity
 -- ============================================================================
 
-def ComplementaryAmplitudeLaw (a_sing a_reg : ℚ) : Prop :=
+abbrev ComplementaryAmplitudeLaw (a_sing a_reg : ℚ) : Prop :=
   a_sing + a_reg = PrimitiveIdempotentTraceRat
 
 def isolation_ComplementaryRegularTraceAmplitude (a_sing : ℚ) :
@@ -168,7 +167,7 @@ def isolation_ComplementaryRegularTraceAmplitude (a_sing : ℚ) :
 def ComplementaryRegularTraceAmplitude (a_sing : ℚ) : ℚ :=
   (isolation_ComplementaryRegularTraceAmplitude a_sing).survivor
 
-def RadonNikodymQuadraticLaw (a_sing w : ℚ) : Prop :=
+abbrev RadonNikodymQuadraticLaw (a_sing w : ℚ) : Prop :=
   w + a_sing * (SymmetricSplitRankRat * PrimitiveIdempotentTraceRat - a_sing) =
     PrimitiveIdempotentTraceRat ^ SymmetricSplitRank
 
@@ -196,7 +195,7 @@ def isolation_RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) :
 def RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) : ℚ :=
   (isolation_RadonNikodymBoundaryProbabilityWeight a_sing).survivor
 
-def IsotropicWavefrontLaw (Qu Qv Qsum ds2 : ℚ) : Prop :=
+abbrev IsotropicWavefrontLaw (Qu Qv Qsum ds2 : ℚ) : Prop :=
   ds2 + Qsum = SymmetricSplitRankRat * Qu + SymmetricSplitRankRat * Qv
 
 def isolation_IsotropicWavefrontIntervalSq (Qu Qv Qsum : ℚ) :
