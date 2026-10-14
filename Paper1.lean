@@ -40,8 +40,7 @@ def isolation_NullCapacity :
     omega
   capable_B := by
     dsimp [ScaleInvariantNullity]
-    change (⊥ : ℕ) + ⊥ ≤ ⊥
-    simp
+    decide
   sub_critical_incapable := by
     intro x hx
     exact (not_lt_bot hx).elim
@@ -53,7 +52,8 @@ def isolation_NullCapacity :
   unique_survivor := by
     intro x
     dsimp [NonNegativeCapacity, ScaleInvariantNullity]
-    change (x ≥ x - x ∧ x + x ≤ x) ↔ x = x - x
+    have hbot : (⊥ : ℕ) = x - x := by simp
+    rw [hbot]
     omega
 
 def NullCapacity : ℕ := isolation_NullCapacity.survivor
@@ -90,7 +90,8 @@ def isolation_TimelikeSignatureRank :
     dsimp [CapableOfNonEmptyNullCone, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hp hA
     rw [Finset.card_singleton] at hp
-    change p > p - p at hA
+    have hbot : (⊥ : ℕ) = p - p := by simp
+    rw [hbot] at hA
     omega
   super_critical_incapable := by
     intro p hp hB
@@ -102,8 +103,8 @@ def isolation_TimelikeSignatureRank :
     dsimp [CapableOfNonEmptyNullCone, CapableOfPointedConvexity,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    change (p > p - p ∧ p * p ≤ p) ↔ p = ({⊥} : Finset ℕ).card
-    rw [Finset.card_singleton]
+    have hbot : (⊥ : ℕ) = p - p := by simp
+    rw [hbot]
     constructor
     · intro ⟨hA, hB⟩
       nlinarith
@@ -236,7 +237,8 @@ def isolation_PrimitiveIdempotentTrace :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hk hA
     rw [Finset.card_singleton] at hk
-    change k > k - k at hA
+    have hbot : (⊥ : ℕ) = k - k := by simp
+    rw [hbot] at hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -252,9 +254,8 @@ def isolation_PrimitiveIdempotentTrace :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    change (k > k - k ∧ k + ({⊥} : Finset ℕ).card ≤ ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card) ↔
-      k = ({⊥} : Finset ℕ).card
-    rw [Finset.card_singleton]
+    have hbot : (⊥ : ℕ) = k - k := by simp
+    rw [hbot]
     omega
 
 def PrimitiveIdempotentTrace : ℕ := isolation_PrimitiveIdempotentTrace.survivor
@@ -588,7 +589,8 @@ def isolation_MaximalArithmeticLatticeIndex :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hk hA
     rw [Finset.card_singleton] at hk
-    change k > k - k at hA
+    have hbot : (⊥ : ℕ) = k - k := by simp
+    rw [hbot] at hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -601,8 +603,8 @@ def isolation_MaximalArithmeticLatticeIndex :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    change (k > k - k ∧ k ≤ ({⊥} : Finset ℕ).card) ↔ k = ({⊥} : Finset ℕ).card
-    rw [Finset.card_singleton]
+    have hbot : (⊥ : ℕ) = k - k := by simp
+    rw [hbot]
     omega
 
 def MaximalArithmeticLatticeIndex : ℕ := isolation_MaximalArithmeticLatticeIndex.survivor
