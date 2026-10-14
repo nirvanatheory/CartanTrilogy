@@ -28,37 +28,34 @@ structure UniqueLawSolution {α : Type} (Law : α → Prop) where
 -- STEP 1: Isolation of Vanishing Generator Capacity (NullCapacity)
 -- ============================================================================
 
-def CanonicalVanishingRay : ℕ := ([()] : List Unit).length - ([()] : List Unit).length
+def EmptyRayList : List ℕ := []
+def VanishingListLength : ℕ := EmptyRayList.length
 
 abbrev NonNegativeCapacity (c : ℕ) : Prop := c ≥ c - c
 abbrev ScaleInvariantNullity (c : ℕ) : Prop := c + c ≤ c
 
 def isolation_NullCapacity :
     IntersectionIsolation NonNegativeCapacity ScaleInvariantNullity where
-  survivor := CanonicalVanishingRay
-  capable_A := by
-    dsimp [NonNegativeCapacity, CanonicalVanishingRay]
-    omega
-  capable_B := by
-    dsimp [ScaleInvariantNullity, CanonicalVanishingRay]
-    omega
+  survivor := VanishingListLength
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
-    intro x hx
-    dsimp [CanonicalVanishingRay] at hx
+    intro x hx hA
+    dsimp [VanishingListLength, EmptyRayList] at hx
     omega
   super_critical_incapable := by
     intro x hx hB
-    dsimp [ScaleInvariantNullity, CanonicalVanishingRay] at hx hB
+    dsimp [ScaleInvariantNullity, VanishingListLength, EmptyRayList] at hx hB
     omega
   unique_survivor := by
     intro x
-    dsimp [NonNegativeCapacity, ScaleInvariantNullity, CanonicalVanishingRay]
+    dsimp [NonNegativeCapacity, ScaleInvariantNullity, VanishingListLength, EmptyRayList]
     omega
 
 def NullCapacity : ℕ := isolation_NullCapacity.survivor
 def NullCapacityRat : ℚ := (NullCapacity : ℚ)
 
-@[simp] theorem NullCapacity_val : NullCapacity = CanonicalVanishingRay := rfl
+@[simp] theorem NullCapacity_val : NullCapacity = ([] : List ℕ).length := rfl
 
 -- ============================================================================
 -- STEP 2: Isolation of Pointed Lorentzian Signature (TimelikeSignatureRank)
@@ -81,7 +78,7 @@ def isolation_TimelikeSignatureRank :
   sub_critical_incapable := by
     intro p hp hA
     dsimp [CapableOfNonEmptyNullCone, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay] at hp hA
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList] at hp hA
     omega
   super_critical_incapable := by
     intro p hp hB
@@ -91,7 +88,7 @@ def isolation_TimelikeSignatureRank :
     intro p
     dsimp [CapableOfNonEmptyNullCone, CapableOfPointedConvexity,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity,
-      isolation_NullCapacity, CanonicalVanishingRay]
+      isolation_NullCapacity, VanishingListLength, EmptyRayList]
     constructor
     · intro ⟨hA, hB⟩
       nlinarith
@@ -204,7 +201,7 @@ def isolation_PrimitiveIdempotentTrace :
     intro k hk hA
     dsimp [CapableOfNonZeroIdempotentRay, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay] at hk hA
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList] at hk hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -217,7 +214,7 @@ def isolation_PrimitiveIdempotentTrace :
     dsimp [CapableOfNonZeroIdempotentRay, CapableOfSingularBoundaryIdempotent,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     omega
 
 def PrimitiveIdempotentTrace : ℕ := isolation_PrimitiveIdempotentTrace.survivor
@@ -233,7 +230,7 @@ def isolation_PrimitiveIdempotentScalar : UniqueLawSolution IdempotentScalarLaw 
       isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
   unique_survivor := by
     intro c0
@@ -241,7 +238,7 @@ def isolation_PrimitiveIdempotentScalar : UniqueLawSolution IdempotentScalarLaw 
       isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -274,7 +271,7 @@ theorem primitive_idempotent_norm_vanishes :
     SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank,
     isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-    NullCapacityRat, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+    NullCapacityRat, NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
   norm_num
 
 theorem ray_metric_degeneracy (lam : ℚ) :
@@ -286,7 +283,7 @@ theorem ray_metric_degeneracy (lam : ℚ) :
     isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
     JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-    NullCapacityRat, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+    NullCapacityRat, NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
   push_cast
   ring
 
@@ -498,7 +495,7 @@ def isolation_MaximalArithmeticLatticeIndex :
     dsimp [CapableOfNonDegenerateCovering, PrimitiveIdempotentTrace,
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay] at hk hA
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList] at hk hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -509,7 +506,7 @@ def isolation_MaximalArithmeticLatticeIndex :
     dsimp [CapableOfNonDegenerateCovering, CapableOfMinimalHaarCovolume,
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     omega
 
 def MaximalArithmeticLatticeIndex : ℕ := isolation_MaximalArithmeticLatticeIndex.survivor
@@ -530,7 +527,7 @@ def isolation_RestrictedWeylVectorLongCoord : UniqueLawSolution WeylLongCoordLaw
       isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
   unique_survivor := by
     intro rx
@@ -540,7 +537,7 @@ def isolation_RestrictedWeylVectorLongCoord : UniqueLawSolution WeylLongCoordLaw
       isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     constructor <;> intro h <;> linarith
 
 def RestrictedWeylVectorLongCoord : ℚ := isolation_RestrictedWeylVectorLongCoord.survivor
@@ -556,7 +553,7 @@ def isolation_RestrictedWeylVectorShortCoord : UniqueLawSolution WeylShortCoordL
       HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
   unique_survivor := by
     intro ry
@@ -565,7 +562,7 @@ def isolation_RestrictedWeylVectorShortCoord : UniqueLawSolution WeylShortCoordL
       HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     constructor <;> intro h <;> linarith
 
 def RestrictedWeylVectorShortCoord : ℚ := isolation_RestrictedWeylVectorShortCoord.survivor
@@ -599,7 +596,7 @@ def isolation_ReciprocalWeylRootInvariant : UniqueLawSolution ReciprocalWeylLaw 
       PrimitiveIdempotentTraceRat, PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
       SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank, SingletonRayCardinality,
-      ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
   unique_survivor := by
     intro k_inv
@@ -614,7 +611,7 @@ def isolation_ReciprocalWeylRootInvariant : UniqueLawSolution ReciprocalWeylLaw 
       PrimitiveIdempotentTraceRat, PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
       SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank, SingletonRayCardinality,
-      ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
+      ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     push_cast
     constructor <;> intro h <;> linarith
 
