@@ -1,4 +1,3 @@
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
