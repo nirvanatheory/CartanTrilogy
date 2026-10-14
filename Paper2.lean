@@ -85,7 +85,7 @@ def isolation_CauchySzegoHardyExponent : UniqueLawSolution CauchySzegoHardyLaw w
       SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
+      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
     norm_num
   unique_survivor := by
     intro k_H
@@ -98,7 +98,7 @@ def isolation_CauchySzegoHardyExponent : UniqueLawSolution CauchySzegoHardyLaw w
       SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
+      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
     constructor <;> intro h <;> linarith
 
 def CauchySzegoHardyExponent : ℚ := isolation_CauchySzegoHardyExponent.survivor
@@ -117,16 +117,14 @@ def isolation_AntiHolomorphicFourierLeakage (p : ℚ) :
     dsimp [AntiHolomorphicLeakageLaw, SymmetricSplitRankRat, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    push_cast
+      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
     ring
   unique_survivor := by
     intro w_perp
     dsimp [AntiHolomorphicLeakageLaw, SymmetricSplitRankRat, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    push_cast
+      NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
     constructor <;> intro h <;> linarith
 
 def AntiHolomorphicFourierLeakage (p : ℚ) : ℚ :=
@@ -142,7 +140,7 @@ theorem sharp_pvm_idempotence_is_invalid (p : ℚ)
     isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
     JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-    NullCapacityRat, NullCapacity, isolation_NullCapacity] at hp_pos hp_lt ⊢
+    NullCapacityRat, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay] at hp_pos hp_lt ⊢
   push_cast at hp_pos hp_lt ⊢
   constructor <;> nlinarith
 
@@ -180,7 +178,6 @@ def isolation_RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    push_cast
     ring
   unique_survivor := by
     intro w
@@ -189,7 +186,6 @@ def isolation_RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    push_cast
     constructor <;> intro h <;> linarith
 
 def RadonNikodymBoundaryProbabilityWeight (a_sing : ℚ) : ℚ :=
@@ -217,7 +213,7 @@ theorem isotropic_wavefront_interval_vanishes (Qu Qv Qsum : ℚ)
     IsotropicWavefrontIntervalSq Qu Qv Qsum = NullCapacityRat := by
   dsimp [IsotropicWavefrontIntervalSq, isolation_IsotropicWavefrontIntervalSq]
   rw [hu, hv, hsum]
-  dsimp [NullCapacityRat, NullCapacity, isolation_NullCapacity]
+  dsimp [NullCapacityRat, NullCapacity, isolation_NullCapacity, CanonicalVanishingRay]
   ring
 
 end Paper2
