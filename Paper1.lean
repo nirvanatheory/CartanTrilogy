@@ -1,4 +1,3 @@
-import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
 
@@ -63,11 +62,11 @@ def NullCapacityRat : ℚ := (NullCapacity : ℚ)
 -- STEP 2: Isolation of Pointed Lorentzian Signature (TimelikeSignatureRank)
 -- ============================================================================
 
-def ProjectiveRaySingleton : Finset ℕ := {NullCapacity}
-def SingletonRayCardinality : ℕ := ProjectiveRaySingleton.card
+def ProjectiveRaySingleton : List ℕ := [NullCapacity]
+def SingletonRayCardinality : ℕ := ProjectiveRaySingleton.length
 
 @[simp] theorem SingletonRayCardinality_val :
-    SingletonRayCardinality = ({NullCapacity} : Finset ℕ).card := rfl
+    SingletonRayCardinality = ([NullCapacity] : List ℕ).length := rfl
 
 def CapableOfNonEmptyNullCone (p : ℕ) : Prop := p > NullCapacity
 def CapableOfPointedConvexity (p : ℕ) : Prop := p * p ≤ p
@@ -75,30 +74,21 @@ def CapableOfPointedConvexity (p : ℕ) : Prop := p * p ≤ p
 def isolation_TimelikeSignatureRank :
     IntersectionIsolation CapableOfNonEmptyNullCone CapableOfPointedConvexity where
   survivor := SingletonRayCardinality
-  capable_A := by
-    dsimp [CapableOfNonEmptyNullCone, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    decide
-  capable_B := by
-    dsimp [CapableOfPointedConvexity, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    decide
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro p hp hA
     dsimp [CapableOfNonEmptyNullCone, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hp hA
-    rw [Finset.card_singleton] at hp
     omega
   super_critical_incapable := by
     intro p hp hB
     dsimp [CapableOfPointedConvexity, SingletonRayCardinality, ProjectiveRaySingleton] at hp hB
-    rw [Finset.card_singleton] at hp
     nlinarith
   unique_survivor := by
     intro p
     dsimp [CapableOfNonEmptyNullCone, CapableOfPointedConvexity,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     constructor
     · intro ⟨hA, hB⟩
       nlinarith
@@ -121,32 +111,23 @@ def CapableOfQuadraticNullBoundary (r : ℕ) : Prop :=
 def isolation_JordanAlgebraRank :
     IntersectionIsolation CapableOfNonCollinearBoundaryRays CapableOfQuadraticNullBoundary where
   survivor := TimelikeSignatureRank + TimelikeSignatureRank
-  capable_A := by
-    dsimp [CapableOfNonCollinearBoundaryRays, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
-  capable_B := by
-    dsimp [CapableOfQuadraticNullBoundary, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro r hr hA
     dsimp [CapableOfNonCollinearBoundaryRays, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at hr hA
-    rw [Finset.card_singleton] at hr hA
     omega
   super_critical_incapable := by
     intro r hr hB
     dsimp [CapableOfQuadraticNullBoundary, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at hr hB
-    rw [Finset.card_singleton] at hr hB
     nlinarith
   unique_survivor := by
     intro r
     dsimp [CapableOfNonCollinearBoundaryRays, CapableOfQuadraticNullBoundary,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     constructor
     · intro ⟨hA, hB⟩
       nlinarith
@@ -166,7 +147,6 @@ theorem veblen_young_pasch_incidence (dim_U1 dim_U2 dim_Sum dim_Inter : ℕ)
     dim_Inter ≥ TimelikeSignatureRank := by
   dsimp [JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at *
-  rw [Finset.card_singleton] at *
   omega
 
 -- ============================================================================
@@ -215,29 +195,19 @@ def CapableOfSingularBoundaryIdempotent (k : ℕ) : Prop :=
 def isolation_PrimitiveIdempotentTrace :
     IntersectionIsolation CapableOfNonZeroIdempotentRay CapableOfSingularBoundaryIdempotent where
   survivor := TimelikeSignatureRank
-  capable_A := by
-    dsimp [CapableOfNonZeroIdempotentRay, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    decide
-  capable_B := by
-    dsimp [CapableOfSingularBoundaryIdempotent, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro k hk hA
     dsimp [CapableOfNonZeroIdempotentRay, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hk hA
-    rw [Finset.card_singleton] at hk
     omega
   super_critical_incapable := by
     intro k hk hB
     dsimp [CapableOfSingularBoundaryIdempotent, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at hk hB
-    rw [Finset.card_singleton] at hk hB
     omega
   unique_survivor := by
     intro k
@@ -245,7 +215,6 @@ def isolation_PrimitiveIdempotentTrace :
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     omega
 
 def PrimitiveIdempotentTrace : ℕ := isolation_PrimitiveIdempotentTrace.survivor
@@ -270,7 +239,6 @@ def isolation_PrimitiveIdempotentScalar : UniqueLawSolution IdempotentScalarLaw 
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -316,7 +284,6 @@ theorem ray_metric_degeneracy (lam : ℚ) :
     JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
     NullCapacityRat, NullCapacity, isolation_NullCapacity]
-  rw [Finset.card_singleton]
   push_cast
   ring
 
@@ -333,23 +300,13 @@ def CapableOfSymplecticHyperkahlerHolonomy (k : ℕ) : Prop :=
 def isolation_HyperkahlerSliceComplexDim :
     IntersectionIsolation CapableOfCrepantSUHolonomy CapableOfSymplecticHyperkahlerHolonomy where
   survivor := SymmetricSplitRank
-  capable_A := by
-    dsimp [CapableOfCrepantSUHolonomy, SymmetricSplitRank, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
-  capable_B := by
-    dsimp [CapableOfSymplecticHyperkahlerHolonomy, SymmetricSplitRank, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
+  capable_B := by decide
   sub_critical_incapable := by
     intro k hk hA
     dsimp [CapableOfCrepantSUHolonomy, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at hk hA
-    rw [Finset.card_singleton] at hk hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -357,7 +314,6 @@ def isolation_HyperkahlerSliceComplexDim :
       isolation_JordanAlgebraRank, PrimitiveIdempotentTrace,
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton] at hk hB
-    rw [Finset.card_singleton] at hk hB
     nlinarith
   unique_survivor := by
     intro k
@@ -365,7 +321,6 @@ def isolation_HyperkahlerSliceComplexDim :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     constructor
     · intro ⟨hA, hB⟩
       nlinarith
@@ -389,14 +344,7 @@ def CapableOfIsolatedSliceLocalization (m : ℕ) : Prop :=
 def isolation_ShortRootMultiplicity :
     IntersectionIsolation CapableOfChiralAlternatingTorsion CapableOfIsolatedSliceLocalization where
   survivor := HyperkahlerSliceComplexDim + DiagonalAxisDimension
-  capable_A := by
-    dsimp [CapableOfChiralAlternatingTorsion, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-      PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
-      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  capable_A := by decide
   capable_B := by
     dsimp [CapableOfIsolatedSliceLocalization]
     omega
@@ -408,7 +356,6 @@ def isolation_ShortRootMultiplicity :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton] at hm hA
-    rw [Finset.card_singleton] at hm hA
     omega
   super_critical_incapable := by
     intro m hm hB
@@ -422,7 +369,6 @@ def isolation_ShortRootMultiplicity :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     omega
 
 def ShortRootMultiplicity : ℕ := isolation_ShortRootMultiplicity.survivor
@@ -432,14 +378,7 @@ def AlternatingWeylIndexLaw (T : ℕ) : Prop :=
 
 def isolation_ChiralWeylCyclicOrder : UniqueLawSolution AlternatingWeylIndexLaw where
   survivor := HyperkahlerSliceComplexDim + DiagonalAxisDimension
-  satisfies_law := by
-    dsimp [AlternatingWeylIndexLaw, ShortRootMultiplicity, isolation_ShortRootMultiplicity,
-      HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim,
-      DiagonalAxisDimension, PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
-      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
-      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  satisfies_law := by decide
   unique_survivor := by
     intro T
     dsimp [AlternatingWeylIndexLaw, ShortRootMultiplicity, isolation_ShortRootMultiplicity,
@@ -448,7 +387,6 @@ def isolation_ChiralWeylCyclicOrder : UniqueLawSolution AlternatingWeylIndexLaw 
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     change (1 + 1) * T = Nat.factorial (1 + 1 + 1) ↔ T = 1 + 1 + 1
     have hfact : Nat.factorial (1 + 1 + 1) = (1 + 1) * (1 + 1 + 1) := rfl
     rw [hfact]
@@ -512,14 +450,7 @@ def ShilovSphereEmbedLaw (d : ℕ) : Prop :=
 
 def isolation_ShilovHorizonSphereDim : UniqueLawSolution ShilovSphereEmbedLaw where
   survivor := CriticalComplexDimension - TimelikeSignatureRank
-  satisfies_law := by
-    dsimp [ShilovSphereEmbedLaw, CriticalComplexDimension, isolation_CriticalComplexDimension,
-      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
-      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, SymmetricSplitRank, JordanAlgebraRank,
-      isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
-      SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  satisfies_law := by decide
   unique_survivor := by
     intro d
     dsimp [ShilovSphereEmbedLaw, CriticalComplexDimension, isolation_CriticalComplexDimension,
@@ -528,7 +459,6 @@ def isolation_ShilovHorizonSphereDim : UniqueLawSolution ShilovSphereEmbedLaw wh
       isolation_PrimitiveIdempotentTrace, SymmetricSplitRank, JordanAlgebraRank,
       isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     omega
 
 def ShilovHorizonSphereDim : ℕ := isolation_ShilovHorizonSphereDim.survivor
@@ -538,13 +468,7 @@ def McKayExceptionalCurveLaw (c_exc : ℕ) : Prop :=
 
 def isolation_KronheimerExceptionalCurveCount : UniqueLawSolution McKayExceptionalCurveLaw where
   survivor := ChiralWeylCyclicOrder - PrimitiveIdempotentTrace
-  satisfies_law := by
-    dsimp [McKayExceptionalCurveLaw, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
-      HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
-      PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, SymmetricSplitRank,
-      JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    decide
+  satisfies_law := by decide
   unique_survivor := by
     intro c_exc
     dsimp [McKayExceptionalCurveLaw, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
@@ -552,7 +476,6 @@ def isolation_KronheimerExceptionalCurveCount : UniqueLawSolution McKayException
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, SymmetricSplitRank,
       JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton]
-    rw [Finset.card_singleton]
     omega
 
 def KronheimerExceptionalCurveCount : ℕ := isolation_KronheimerExceptionalCurveCount.survivor
@@ -563,12 +486,7 @@ def CapableOfMinimalHaarCovolume (k : ℕ) : Prop := k ≤ PrimitiveIdempotentTr
 def isolation_MaximalArithmeticLatticeIndex :
     IntersectionIsolation CapableOfNonDegenerateCovering CapableOfMinimalHaarCovolume where
   survivor := PrimitiveIdempotentTrace
-  capable_A := by
-    dsimp [CapableOfNonDegenerateCovering, PrimitiveIdempotentTrace,
-      isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
-      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
-      NullCapacity, isolation_NullCapacity]
-    decide
+  capable_A := by decide
   capable_B := by
     dsimp [CapableOfMinimalHaarCovolume]
     omega
@@ -578,7 +496,6 @@ def isolation_MaximalArithmeticLatticeIndex :
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hk hA
-    rw [Finset.card_singleton] at hk
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -590,7 +507,6 @@ def isolation_MaximalArithmeticLatticeIndex :
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     omega
 
 def MaximalArithmeticLatticeIndex : ℕ := isolation_MaximalArithmeticLatticeIndex.survivor
@@ -622,7 +538,6 @@ def isolation_RestrictedWeylVectorLongCoord : UniqueLawSolution WeylLongCoordLaw
       isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -649,7 +564,6 @@ def isolation_RestrictedWeylVectorShortCoord : UniqueLawSolution WeylShortCoordL
       PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
@@ -700,7 +614,6 @@ def isolation_ReciprocalWeylRootInvariant : UniqueLawSolution ReciprocalWeylLaw 
       SymmetricSplitRankRat, SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank, SingletonRayCardinality,
       ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
-    rw [Finset.card_singleton]
     push_cast
     constructor <;> intro h <;> linarith
 
