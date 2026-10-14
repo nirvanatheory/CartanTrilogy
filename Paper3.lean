@@ -45,11 +45,8 @@ def isolation_InvolutiveSubquadricCodim :
     dsimp [CapableOfNormalFluxConfinement, TimelikeSignatureRank,
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hc hA
-    change c < ({⊥} : Finset ℕ).card at hc
-    change c > ⊥ at hA
     rw [Finset.card_singleton] at hc
-    have hbot : (⊥ : ℕ) = c - c := by simp
-    rw [hbot] at hA
+    simp only [Nat.bot_eq_zero] at hA
     omega
   super_critical_incapable := by
     intro c hc hB
@@ -77,8 +74,7 @@ def isolation_InvolutiveSubquadricCodim :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    have hbot : (⊥ : ℕ) = c - c := by simp
-    rw [hbot]
+    simp only [Nat.bot_eq_zero]
     omega
 
 def InvolutiveSubquadricCodim : ℕ := isolation_InvolutiveSubquadricCodim.survivor
@@ -153,11 +149,8 @@ def isolation_ParabolicUnipotentTerminationDegree :
       SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity] at hk hA
-    change k < ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card - ({⊥} : Finset ℕ).card at hk
-    change k > ⊥ at hA
     rw [Finset.card_singleton] at hk
-    have hbot : (⊥ : ℕ) = k - k := by simp
-    rw [hbot] at hA
+    simp only [Nat.bot_eq_zero] at hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -170,8 +163,7 @@ def isolation_ParabolicUnipotentTerminationDegree :
       isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    have hbot : (⊥ : ℕ) = k - k := by simp
-    rw [hbot]
+    simp only [Nat.bot_eq_zero]
     omega
 
 def ParabolicUnipotentTerminationDegree : ℕ :=
