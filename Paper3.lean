@@ -46,7 +46,7 @@ def isolation_InvolutiveSubquadricCodim :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity] at hc hA
     rw [Finset.card_singleton] at hc
-    simp only [Nat.bot_eq_zero] at hA
+    change c > c - c at hA
     omega
   super_critical_incapable := by
     intro c hc hB
@@ -74,7 +74,10 @@ def isolation_InvolutiveSubquadricCodim :
       isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
       NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    simp only [Nat.bot_eq_zero]
+    change (c > c - c ∧ c + (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card) ≤
+      (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + (({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card) - ({⊥} : Finset ℕ).card)) ↔
+      c = ({⊥} : Finset ℕ).card
+    rw [Finset.card_singleton]
     omega
 
 def InvolutiveSubquadricCodim : ℕ := isolation_InvolutiveSubquadricCodim.survivor
@@ -150,7 +153,7 @@ def isolation_ParabolicUnipotentTerminationDegree :
       TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity] at hk hA
     rw [Finset.card_singleton] at hk
-    simp only [Nat.bot_eq_zero] at hA
+    change k > k - k at hA
     omega
   super_critical_incapable := by
     intro k hk hB
@@ -163,7 +166,9 @@ def isolation_ParabolicUnipotentTerminationDegree :
       isolation_JordanAlgebraRank, TimelikeSignatureRank, isolation_TimelikeSignatureRank,
       SingletonRayCardinality, ProjectiveRaySingleton, NullCapacity, isolation_NullCapacity]
     rw [Finset.card_singleton]
-    simp only [Nat.bot_eq_zero]
+    change (k > k - k ∧ k ≤ ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card - ({⊥} : Finset ℕ).card) ↔
+      k = ({⊥} : Finset ℕ).card + ({⊥} : Finset ℕ).card - ({⊥} : Finset ℕ).card
+    rw [Finset.card_singleton]
     omega
 
 def ParabolicUnipotentTerminationDegree : ℕ :=
@@ -415,7 +420,7 @@ theorem master_trilogy_relational_laws_verified :
   · decide
   · dsimp [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect,
       applyCurvedHorizonOp, NullCapacityRat, NullCapacity, isolation_NullCapacity]
-    simp
+    push_cast
     ring
   · dsimp [MaximalLagrangianLinkDefect]
     ring
