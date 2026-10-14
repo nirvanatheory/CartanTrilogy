@@ -27,4 +27,4 @@ jobs:
 
       - name: Verify All Proofs & Output Invariant Ledger
         run: |
-          lake build -v
+          lake build
