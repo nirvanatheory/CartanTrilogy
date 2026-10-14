@@ -157,7 +157,7 @@ theorem sharp_pvm_idempotence_is_invalid (p : ℚ)
     JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
     isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
     NullCapacityRat, NullCapacity, isolation_NullCapacity] at hp_pos hp_lt ⊢
-  rw [Finset.card_singleton] at hp_pos hp_lt ⊢
+  rw [Finset.card_singleton] at hp_lt ⊢
   push_cast at hp_pos hp_lt ⊢
   constructor <;> nlinarith
 
