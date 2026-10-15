@@ -16,8 +16,8 @@ open Paper2
 -- KERNEL-VERIFIED 1-STEP SYNTACTIC BRIDGES FROM PAPER I (0ms `rfl`)
 -- ============================================================================
 
-theorem def_c0 : NullCapacity = VanishingListLength := rfl
-theorem def_c1 : TimelikeSignatureRank = SingletonRayCardinality := rfl
+theorem nat_c0 : ([] : List ℕ).length = NullCapacity := rfl
+theorem nat_c1 : ([NullCapacity] : List ℕ).length = TimelikeSignatureRank := rfl
 theorem def_c2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := rfl
 theorem def_c3 : PrimitiveIdempotentTrace = TimelikeSignatureRank := rfl
 theorem def_c4 : RestrictedLongRootMultiplicity = SymmetricSplitRank - TimelikeSignatureRank := rfl
@@ -27,9 +27,6 @@ theorem def_c6 : ShortRootMultiplicity = HyperkahlerSliceComplexDim + DiagonalAx
 theorem def_c7 : ChiralWeylCyclicOrder = HyperkahlerSliceComplexDim + DiagonalAxisDimension := rfl
 theorem def_c8 : CriticalComplexDimension = SymmetricSplitRank + ShortRootMultiplicity := rfl
 theorem def_c9 : ShilovHorizonSphereDim = CriticalComplexDimension - TimelikeSignatureRank := rfl
-
-theorem nat_c0 : NullCapacity = ([] : List ℕ).length := rfl
-theorem nat_c1 : TimelikeSignatureRank = ([NullCapacity] : List ℕ).length := rfl
 
 -- ============================================================================
 -- STEP 12: Isolation of the Lorentzian Subquadric M⁴ ⊂ Q₅
@@ -221,8 +218,6 @@ def isolation_ExteriorAlgebraTerminationDegree :
 def ExteriorAlgebraTerminationDegree : ℕ :=
   isolation_ExteriorAlgebraTerminationDegree.survivor
 
-theorem exterior_term_eq : ExteriorAlgebraTerminationDegree = ShortRootMultiplicity := rfl
-
 inductive SectorIndex where
   | flatSplitTorus
   | curvedHorizonFrame
@@ -245,7 +240,15 @@ abbrev CompactDualEulerLaw (chi : ℕ) : Prop :=
 
 def isolation_CompactDualEulerCharacteristic : UniqueLawSolution CompactDualEulerLaw where
   survivor := SymmetricSplitRank * ShortRootMultiplicity
-  satisfies_law := by decide
+  satisfies_law := by
+    dsimp [CompactDualEulerLaw, HyperoctahedralWeylOrder,
+      ShortRootMultiplicity, isolation_ShortRootMultiplicity,
+      HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim,
+      DiagonalAxisDimension, PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
+      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
+      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
+      SingletonRayCardinality, ProjectiveRaySingleton]
+    decide
   unique_survivor := by
     intro chi
     dsimp [CompactDualEulerLaw, HyperoctahedralWeylOrder,
@@ -263,7 +266,6 @@ def isolation_CompactDualEulerCharacteristic : UniqueLawSolution CompactDualEule
     rw [hf2, hf3]
     omega
 
--- Pure core arithmetic survivor (eliminates `Nat.factorial` from all downstream `ℚ` denominators!)
 def CompactDualEulerCharacteristic : ℕ :=
   isolation_CompactDualEulerCharacteristic.survivor
 
@@ -280,8 +282,11 @@ def ElementaryHorizonModularCell : ℚ :=
   (CriticalComplexDimension : ℚ) /
   ((CompactDualEulerCharacteristic * HorizonCliffordSpinorDim * HorizonSphereScalarCurvature : ℕ) : ℚ)
 
+def mkLinkAsymmetry (r1 r2 : ℕ) : ℚ :=
+  (r1 : ℚ) / ((r2 ^ r1 : ℕ) : ℚ)
+
 def LinkAPSSpectralAsymmetry : ℚ :=
-  SymmetricSplitRankRat / ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ)
+  mkLinkAsymmetry SymmetricSplitRank ShortRootMultiplicity
 
 def SingularLinkKernelIndex : ℚ :=
   PrimitiveIdempotentTraceRat /
@@ -297,8 +302,10 @@ def WeylSignOctantCount : ℕ :=
 def UnpuncturedWeylHorizonTrace : ℚ :=
   (WeylSignOctantCount : ℚ) * ElementaryHorizonModularCell
 
+def subDefect (u s : ℚ) : ℚ := u - s
+
 def MaximalLagrangianLinkDefect : ℚ :=
-  UnpuncturedWeylHorizonTrace - SingularLinkKernelIndex
+  subDefect UnpuncturedWeylHorizonTrace SingularLinkKernelIndex
 
 def BareExceptionalDivisorSeed : ℚ :=
   ((CompactDualEulerCharacteristic : ℚ) * LinkAPSSpectralAsymmetry * ElementaryHorizonModularCell) /
@@ -316,69 +323,29 @@ def MaximalCompactSubalgebraDim : ℕ :=
 def CompactSubalgebraFrameTrace : ℚ :=
   (MaximalCompactSubalgebraDim : ℚ) / (ShilovHorizonSphereDim : ℚ)
 
+def mkTorusDefect (a b c : ℚ) : ℚ := a + b + c
+
 def FlatSplitTorusBoundaryDefect : ℚ :=
-  CompactSubalgebraFrameTrace + FlatContractedGeodesicResidue +
-  applyCurvedHorizonOp .flatSplitTorus ElementaryHorizonModularCell
+  mkTorusDefect CompactSubalgebraFrameTrace FlatContractedGeodesicResidue
+    (applyCurvedHorizonOp .flatSplitTorus ElementaryHorizonModularCell)
 
 def CurvedFrameTorusBoundaryDefect : ℚ :=
-  CompactSubalgebraFrameTrace + FlatContractedGeodesicResidue +
-  applyCurvedHorizonOp .curvedHorizonFrame ElementaryHorizonModularCell
-
--- Isolate Binomial Channel Counts via UniqueLawSolution so `Nat.choose` never enters `ℚ` reduction
-abbrev SymmetricTensorChannelLaw (c_sym : ℕ) : Prop :=
-  c_sym = Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank
-
-def isolation_SymmetricTensorChannelCount : UniqueLawSolution SymmetricTensorChannelLaw where
-  survivor := CriticalComplexDimension * (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank)
-  satisfies_law := by decide
-  unique_survivor := by
-    intro c_sym
-    have hval : Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank =
-        CriticalComplexDimension * (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) := by decide
-    dsimp only [SymmetricTensorChannelLaw]
-    rw [hval]
+  mkTorusDefect CompactSubalgebraFrameTrace FlatContractedGeodesicResidue
+    (applyCurvedHorizonOp .curvedHorizonFrame ElementaryHorizonModularCell)
 
 def SymmetricTensorChannelCount : ℕ :=
-  isolation_SymmetricTensorChannelCount.survivor
-
-abbrev BivectorChannelLaw (c_biv : ℕ) : Prop :=
-  c_biv = Nat.choose ShortRootMultiplicity SymmetricSplitRank
-
-def isolation_BivectorChannelCount : UniqueLawSolution BivectorChannelLaw where
-  survivor := ShortRootMultiplicity
-  satisfies_law := by decide
-  unique_survivor := by
-    intro c_biv
-    have hval : Nat.choose ShortRootMultiplicity SymmetricSplitRank = ShortRootMultiplicity := by decide
-    dsimp only [BivectorChannelLaw]
-    rw [hval]
-
-def BivectorChannelCount : ℕ := isolation_BivectorChannelCount.survivor
-
-abbrev DeterminantChannelLaw (c_det : ℕ) : Prop :=
-  c_det = Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree
-
-def isolation_DeterminantChannelCount : UniqueLawSolution DeterminantChannelLaw where
-  survivor := TimelikeSignatureRank
-  satisfies_law := by decide
-  unique_survivor := by
-    intro c_det
-    have hval : Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree = TimelikeSignatureRank := by decide
-    dsimp only [DeterminantChannelLaw]
-    rw [hval]
-
-def DeterminantChannelCount : ℕ := isolation_DeterminantChannelCount.survivor
+  Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank
 
 def SzegoUnipotentGradeShift : ℚ :=
   -(((SymmetricTensorChannelCount : ℚ) * ElementaryHorizonModularCell) /
     (SymmetricSplitRankRat * ((HorizonSphereScalarCurvature ^ SymmetricSplitRank : ℕ) : ℚ)))
 
 def SzegoBivectorGradeShift : ℚ :=
-  -((BivectorChannelCount : ℚ) / (ShilovHorizonSphereDim : ℚ)) *
+  -(((Nat.choose ShortRootMultiplicity SymmetricSplitRank : ℕ) : ℚ) / (ShilovHorizonSphereDim : ℚ)) *
     (ElementaryHorizonModularCell ^ SymmetricSplitRank)
 
 def SzegoDeterminantGradeShift : ℚ :=
-  -((DeterminantChannelCount : ℚ) *
+  -(((Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree : ℕ) : ℚ) *
     (ElementaryHorizonModularCell ^ ExteriorAlgebraTerminationDegree))
 
 def SzegoClosedPolynomialTotalShift : ℚ :=
@@ -439,18 +406,26 @@ def InstantonPairingBaseQuantumCoeff : ℚ :=
   ((WeylSignOctantCount * SpatialHorizonIsometryCount : ℕ) : ℚ) /
   (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
 
+def mkLowestWeight (r1 r2 T : ℕ) : ℚ :=
+  (((r1 ^ r1 : ℕ) : ℚ) / (T : ℚ)) + ((mkLinkAsymmetry r1 r2) ^ r1)
+
 def LowestPairingEigenvalueWeight : ℚ :=
-  (((SymmetricSplitRank ^ SymmetricSplitRank : ℕ) : ℚ) / (ChiralWeylCyclicOrder : ℚ)) +
-  (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
+  mkLowestWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
+
+def mkMiddleWeight (r1 r2 T : ℕ) : ℚ :=
+  ((r2 ^ r1 : ℕ) : ℚ) - ((r1 : ℚ) / (T : ℚ)) - mkLinkAsymmetry r1 r2
 
 def MiddlePairingEigenvalueWeight : ℚ :=
-  ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ) -
-  (SymmetricSplitRankRat / (ChiralWeylCyclicOrder : ℚ)) - LinkAPSSpectralAsymmetry
+  mkMiddleWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
+
+def mkHighestWeight (u p_tr r1 r2 dS : ℕ) : ℚ :=
+  ((dS * (dS * (dS - u)) : ℕ) : ℚ) +
+  ((p_tr : ℚ) / mkLinkAsymmetry r1 r2) -
+  ((r1 : ℚ) / (r2 : ℚ))
 
 def HighestPairingEigenvalueWeight : ℚ :=
-  ((ShilovHorizonSphereDim * HorizonSphereScalarCurvature : ℕ) : ℚ) +
-  (PrimitiveIdempotentTraceRat / LinkAPSSpectralAsymmetry) -
-  (SymmetricSplitRankRat / (ShortRootMultiplicity : ℚ))
+  mkHighestWeight TimelikeSignatureRank PrimitiveIdempotentTrace
+    SymmetricSplitRank ShortRootMultiplicity ShilovHorizonSphereDim
 
 def InstantonWeightTotalSum : ℚ :=
   LowestPairingEigenvalueWeight + MiddlePairingEigenvalueWeight + HighestPairingEigenvalueWeight
@@ -465,13 +440,97 @@ def TopVolumeTransgressionPrefactor : ℚ :=
   (((CompactDualEulerCharacteristic : ℚ) * RestrictedWeylCasimirNormSq) ^ SubquadricSpacetimeDim) *
   QuadraticCosetAlignment
 
+theorem unit_low_lt_mid (u : ℕ) (hu : ([NullCapacity] : List ℕ).length = u) :
+    mkLowestWeight (u + u) ((u + u) + u) ((u + u) + u) <
+    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) := by
+  rw [List.length_singleton] at hu
+  subst hu
+  dsimp only [mkLowestWeight, mkMiddleWeight, mkLinkAsymmetry]
+  norm_num
+
+theorem unit_mid_lt_high (u : ℕ) (hu : ([NullCapacity] : List ℕ).length = u) :
+    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) <
+    mkHighestWeight u u (u + u) ((u + u) + u) (((u + u) + ((u + u) + u)) - u) := by
+  rw [List.length_singleton] at hu
+  subst hu
+  dsimp only [mkMiddleWeight, mkHighestWeight, mkLinkAsymmetry]
+  norm_num
+
+theorem transfer_low_lt_mid {r1 r2 T : ℕ}
+    (hr1 : SymmetricSplitRank = r1)
+    (hr2 : ShortRootMultiplicity = r2)
+    (hT : ChiralWeylCyclicOrder = T)
+    (h : mkLowestWeight r1 r2 T < mkMiddleWeight r1 r2 T) :
+    LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight := by
+  change mkLowestWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder <
+    mkMiddleWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
+  subst hr1; subst hr2; subst hT
+  exact h
+
+theorem transfer_mid_lt_high {u p_tr r1 r2 T dS : ℕ}
+    (hu : TimelikeSignatureRank = u)
+    (hp : PrimitiveIdempotentTrace = p_tr)
+    (hr1 : SymmetricSplitRank = r1)
+    (hr2 : ShortRootMultiplicity = r2)
+    (hT : ChiralWeylCyclicOrder = T)
+    (hdS : ShilovHorizonSphereDim = dS)
+    (h : mkMiddleWeight r1 r2 T < mkHighestWeight u p_tr r1 r2 dS) :
+    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
+  change mkMiddleWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder <
+    mkHighestWeight TimelikeSignatureRank PrimitiveIdempotentTrace
+      SymmetricSplitRank ShortRootMultiplicity ShilovHorizonSphereDim
+  subst hu; subst hp; subst hr1; subst hr2; subst hT; subst hdS
+  exact h
+
+theorem torus_defect_cancel (a b c z : ℚ) (hz : (([] : List ℕ).length : ℚ) = z) :
+    mkTorusDefect a b c - mkTorusDefect a b z = c := by
+  rw [List.length_nil] at hz
+  subst hz
+  dsimp only [mkTorusDefect]
+  push_cast
+  ring
+
+theorem lagrangian_defect_cancel (u s : ℚ) :
+    u - subDefect u s = s := by
+  dsimp only [subDefect]
+  ring
+
 theorem master_trilogy_relational_laws_verified :
     SubquadricSpacetimeDim = ShilovHorizonSphereDim ∧
     CurvedFrameTorusBoundaryDefect - FlatSplitTorusBoundaryDefect = ElementaryHorizonModularCell ∧
     UnpuncturedWeylHorizonTrace - MaximalLagrangianLinkDefect = SingularLinkKernelIndex ∧
     LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
-    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight :=
-  ⟨by decide, by decide, by decide, by decide, by decide⟩
+    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
+  have h2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := def_c2
+  have h5 : HyperkahlerSliceComplexDim = TimelikeSignatureRank + TimelikeSignatureRank :=
+    Eq.trans def_c5 h2
+  have h5' : DiagonalAxisDimension = TimelikeSignatureRank :=
+    Eq.trans def_c5' def_c3
+  have h6 : ShortRootMultiplicity =
+      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
+    Eq.trans def_c6 (congrArg₂ (· + ·) h5 h5')
+  have h7 : ChiralWeylCyclicOrder =
+      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
+    Eq.trans def_c7 (congrArg₂ (· + ·) h5 h5')
+  have h8 : CriticalComplexDimension =
+      (TimelikeSignatureRank + TimelikeSignatureRank) +
+      ((TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank) :=
+    Eq.trans def_c8 (congrArg₂ (· + ·) h2 h6)
+  have h9 : ShilovHorizonSphereDim =
+      ((TimelikeSignatureRank + TimelikeSignatureRank) +
+       ((TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank)) -
+      TimelikeSignatureRank :=
+    Eq.trans def_c9 (congrArg (· - TimelikeSignatureRank) h8)
+  refine ⟨?_, ?_, ?_,
+    transfer_low_lt_mid h2 h6 h7 (unit_low_lt_mid TimelikeSignatureRank nat_c1),
+    transfer_mid_lt_high rfl def_c3 h2 h6 h7 h9 (unit_mid_lt_high TimelikeSignatureRank nat_c1)⟩
+  · have h1 := nat_c1; have hc := involutive_codim_eq
+    have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
+    rw [List.length_singleton] at h1
+    omega
+  · exact torus_defect_cancel CompactSubalgebraFrameTrace FlatContractedGeodesicResidue
+      ElementaryHorizonModularCell NullCapacityRat (congrArg Nat.cast nat_c0)
+  · exact lagrangian_defect_cancel UnpuncturedWeylHorizonTrace SingularLinkKernelIndex
 
 -- ============================================================================
 -- MASTER COMPILER READOUT LEDGER FOR THE COMPLETE TRILOGY
