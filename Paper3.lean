@@ -13,27 +13,31 @@ open Paper2
 -/
 
 -- ============================================================================
--- KERNEL-VERIFIED NATURAL NUMBER BRIDGES (Pure `ℕ` `rfl`, 0ms)
+-- KERNEL-VERIFIED 1-STEP SYNTACTIC BRIDGES FROM PAPER I (0ms `rfl`)
 -- ============================================================================
+
+theorem def_c0 : NullCapacity = VanishingListLength := rfl
+theorem def_c1 : TimelikeSignatureRank = SingletonRayCardinality := rfl
+theorem def_c2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := rfl
+theorem def_c3 : PrimitiveIdempotentTrace = TimelikeSignatureRank := rfl
+theorem def_c4 : RestrictedLongRootMultiplicity = SymmetricSplitRank - TimelikeSignatureRank := rfl
+theorem def_c5 : HyperkahlerSliceComplexDim = SymmetricSplitRank := rfl
+theorem def_c5' : DiagonalAxisDimension = PrimitiveIdempotentTrace := rfl
+theorem def_c6 : ShortRootMultiplicity = HyperkahlerSliceComplexDim + DiagonalAxisDimension := rfl
+theorem def_c7 : ChiralWeylCyclicOrder = HyperkahlerSliceComplexDim + DiagonalAxisDimension := rfl
+theorem def_c8 : CriticalComplexDimension = SymmetricSplitRank + ShortRootMultiplicity := rfl
+theorem def_c9 : ShilovHorizonSphereDim = CriticalComplexDimension - TimelikeSignatureRank := rfl
 
 theorem nat_c0 : NullCapacity = ([] : List ℕ).length := rfl
 theorem nat_c1 : TimelikeSignatureRank = ([NullCapacity] : List ℕ).length := rfl
-theorem nat_c2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := rfl
-theorem nat_c3 : PrimitiveIdempotentTrace = TimelikeSignatureRank := rfl
-theorem nat_c4 : RestrictedLongRootMultiplicity = TimelikeSignatureRank := rfl
-theorem nat_c5 : HyperkahlerSliceComplexDim = SymmetricSplitRank := rfl
-theorem nat_c6 : ShortRootMultiplicity = SymmetricSplitRank + TimelikeSignatureRank := rfl
-theorem nat_c7 : ChiralWeylCyclicOrder = ShortRootMultiplicity := rfl
-theorem nat_c8 : CriticalComplexDimension = SymmetricSplitRank + ShortRootMultiplicity := rfl
-theorem nat_c9 : ShilovHorizonSphereDim = SymmetricSplitRank + SymmetricSplitRank := rfl
 
 -- ============================================================================
 -- STEP 12: Isolation of the Lorentzian Subquadric M⁴ ⊂ Q₅
 -- ============================================================================
 
-def CapableOfNormalFluxConfinement (c : ℕ) : Prop := c > NullCapacity
+abbrev CapableOfNormalFluxConfinement (c : ℕ) : Prop := c > NullCapacity
 
-def CapableOfEmbeddingSingularLensLink (c : ℕ) : Prop :=
+abbrev CapableOfEmbeddingSingularLensLink (c : ℕ) : Prop :=
   c + ShortRootMultiplicity ≤ ShilovHorizonSphereDim
 
 def isolation_InvolutiveSubquadricCodim :
@@ -46,7 +50,8 @@ def isolation_InvolutiveSubquadricCodim :
     rw [List.length_singleton] at h1
     omega
   capable_B := by
-    have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    have h1 := nat_c1; have h2 := def_c2; have h3 := def_c3; have h5 := def_c5
+    have h5' := def_c5'; have h6 := def_c6; have h8 := def_c8; have h9 := def_c9
     dsimp only [CapableOfEmbeddingSingularLensLink]
     rw [List.length_singleton] at h1
     omega
@@ -59,13 +64,15 @@ def isolation_InvolutiveSubquadricCodim :
     omega
   super_critical_incapable := by
     intro c hc hB
-    have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    have h1 := nat_c1; have h2 := def_c2; have h3 := def_c3; have h5 := def_c5
+    have h5' := def_c5'; have h6 := def_c6; have h8 := def_c8; have h9 := def_c9
     dsimp only [CapableOfEmbeddingSingularLensLink] at hB
     rw [List.length_singleton] at h1
     omega
   unique_survivor := by
     intro c
-    have h0 := nat_c0; have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    have h0 := nat_c0; have h1 := nat_c1; have h2 := def_c2; have h3 := def_c3
+    have h5 := def_c5; have h5' := def_c5'; have h6 := def_c6; have h8 := def_c8; have h9 := def_c9
     dsimp only [CapableOfNormalFluxConfinement, CapableOfEmbeddingSingularLensLink]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
@@ -75,19 +82,23 @@ def InvolutiveSubquadricCodim : ℕ := isolation_InvolutiveSubquadricCodim.survi
 
 theorem involutive_codim_eq : InvolutiveSubquadricCodim = TimelikeSignatureRank := rfl
 
-def CauchySliceCodimLaw (d_s : ℕ) : Prop :=
+abbrev CauchySliceCodimLaw (d_s : ℕ) : Prop :=
   d_s + InvolutiveSubquadricCodim = ShilovHorizonSphereDim
 
 def isolation_CauchySpatialSphereDim : UniqueLawSolution CauchySliceCodimLaw where
   survivor := ShilovHorizonSphereDim - InvolutiveSubquadricCodim
   satisfies_law := by
-    have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9; have hc := involutive_codim_eq
+    have h1 := nat_c1; have h2 := def_c2; have h3 := def_c3; have h5 := def_c5
+    have h5' := def_c5'; have h6 := def_c6; have h8 := def_c8; have h9 := def_c9
+    have hc := involutive_codim_eq
     dsimp only [CauchySliceCodimLaw]
     rw [List.length_singleton] at h1
     omega
   unique_survivor := by
     intro d_s
-    have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9; have hc := involutive_codim_eq
+    have h1 := nat_c1; have h2 := def_c2; have h3 := def_c3; have h5 := def_c5
+    have h5' := def_c5'; have h6 := def_c6; have h8 := def_c8; have h9 := def_c9
+    have hc := involutive_codim_eq
     dsimp only [CauchySliceCodimLaw]
     rw [List.length_singleton] at h1
     omega
@@ -97,7 +108,7 @@ def CauchySpatialSphereDim : ℕ := isolation_CauchySpatialSphereDim.survivor
 theorem cauchy_spatial_eq :
     CauchySpatialSphereDim = ShilovHorizonSphereDim - InvolutiveSubquadricCodim := rfl
 
-def SubquadricSpacetimeLaw (d_M : ℕ) : Prop :=
+abbrev SubquadricSpacetimeLaw (d_M : ℕ) : Prop :=
   d_M ≥ TimelikeSignatureRank ∧ d_M - TimelikeSignatureRank = CauchySpatialSphereDim
 
 def isolation_SubquadricSpacetimeDim : UniqueLawSolution SubquadricSpacetimeLaw where
@@ -119,14 +130,14 @@ theorem spacetime_dim_eq :
 -- STEP 13: Parabolic |1|-Grading Termination and Superselection Rules
 -- ============================================================================
 
-def CapableOfNonTrivialNilpotentTransport (k : ℕ) : Prop := k > NullCapacity
-def CapableOfAbelianUnipotentClosure (k : ℕ) : Prop := k ≤ RestrictedLongRootMultiplicity
+abbrev CapableOfNonTrivialNilpotentTransport (k : ℕ) : Prop := k > NullCapacity
+abbrev CapableOfAbelianUnipotentClosure (k : ℕ) : Prop := k ≤ RestrictedLongRootMultiplicity
 
 def isolation_ParabolicUnipotentTerminationDegree :
     IntersectionIsolation CapableOfNonTrivialNilpotentTransport CapableOfAbelianUnipotentClosure where
   survivor := RestrictedLongRootMultiplicity
   capable_A := by
-    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    have h0 := nat_c0; have h1 := nat_c1; have h2 := def_c2; have h4 := def_c4
     dsimp only [CapableOfNonTrivialNilpotentTransport]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
@@ -136,7 +147,7 @@ def isolation_ParabolicUnipotentTerminationDegree :
     omega
   sub_critical_incapable := by
     intro k hk hA
-    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    have h0 := nat_c0; have h1 := nat_c1; have h2 := def_c2; have h4 := def_c4
     dsimp only [CapableOfNonTrivialNilpotentTransport] at hA
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
@@ -147,7 +158,7 @@ def isolation_ParabolicUnipotentTerminationDegree :
     omega
   unique_survivor := by
     intro k
-    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    have h0 := nat_c0; have h1 := nat_c1; have h2 := def_c2; have h4 := def_c4
     dsimp only [CapableOfNonTrivialNilpotentTransport, CapableOfAbelianUnipotentClosure]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
@@ -156,8 +167,8 @@ def isolation_ParabolicUnipotentTerminationDegree :
 def ParabolicUnipotentTerminationDegree : ℕ :=
   isolation_ParabolicUnipotentTerminationDegree.survivor
 
-def CapableOfTopDeterminantCalibration (k : ℕ) : Prop := k ≥ ShortRootMultiplicity
-def CapableOfNonZeroExteriorGrade (k : ℕ) : Prop :=
+abbrev CapableOfTopDeterminantCalibration (k : ℕ) : Prop := k ≥ ShortRootMultiplicity
+abbrev CapableOfNonZeroExteriorGrade (k : ℕ) : Prop :=
   Nat.choose ShortRootMultiplicity k > NullCapacity
 
 def isolation_ExteriorAlgebraTerminationDegree :
@@ -210,6 +221,8 @@ def isolation_ExteriorAlgebraTerminationDegree :
 def ExteriorAlgebraTerminationDegree : ℕ :=
   isolation_ExteriorAlgebraTerminationDegree.survivor
 
+theorem exterior_term_eq : ExteriorAlgebraTerminationDegree = ShortRootMultiplicity := rfl
+
 inductive SectorIndex where
   | flatSplitTorus
   | curvedHorizonFrame
@@ -226,9 +239,33 @@ def applyCurvedHorizonOp (s : SectorIndex) (opVal : ℚ) : ℚ :=
 def HyperoctahedralWeylOrder (k : ℕ) : ℕ :=
   (SymmetricSplitRank ^ k) * Nat.factorial k
 
+abbrev CompactDualEulerLaw (chi : ℕ) : Prop :=
+  HyperoctahedralWeylOrder SymmetricSplitRank * chi =
+  HyperoctahedralWeylOrder ShortRootMultiplicity
+
+def isolation_CompactDualEulerCharacteristic : UniqueLawSolution CompactDualEulerLaw where
+  survivor := SymmetricSplitRank * ShortRootMultiplicity
+  satisfies_law := by decide
+  unique_survivor := by
+    intro chi
+    dsimp [CompactDualEulerLaw, HyperoctahedralWeylOrder,
+      ShortRootMultiplicity, isolation_ShortRootMultiplicity,
+      HyperkahlerSliceComplexDim, isolation_HyperkahlerSliceComplexDim,
+      DiagonalAxisDimension, PrimitiveIdempotentTrace, isolation_PrimitiveIdempotentTrace,
+      SymmetricSplitRank, JordanAlgebraRank, isolation_JordanAlgebraRank,
+      TimelikeSignatureRank, isolation_TimelikeSignatureRank,
+      SingletonRayCardinality, ProjectiveRaySingleton]
+    change ((1 + 1) ^ (1 + 1) * Nat.factorial (1 + 1)) * chi =
+      (1 + 1) ^ (1 + 1 + 1) * Nat.factorial (1 + 1 + 1) ↔
+      chi = (1 + 1) * (1 + 1 + 1)
+    have hf2 : Nat.factorial (1 + 1) = 1 + 1 := rfl
+    have hf3 : Nat.factorial (1 + 1 + 1) = (1 + 1) * (1 + 1 + 1) := rfl
+    rw [hf2, hf3]
+    omega
+
+-- Pure core arithmetic survivor (eliminates `Nat.factorial` from all downstream `ℚ` denominators!)
 def CompactDualEulerCharacteristic : ℕ :=
-  HyperoctahedralWeylOrder ShortRootMultiplicity /
-  HyperoctahedralWeylOrder SymmetricSplitRank
+  isolation_CompactDualEulerCharacteristic.survivor
 
 def HorizonSphereScalarCurvature : ℕ :=
   ShilovHorizonSphereDim * (ShilovHorizonSphereDim - TimelikeSignatureRank)
@@ -243,11 +280,8 @@ def ElementaryHorizonModularCell : ℚ :=
   (CriticalComplexDimension : ℚ) /
   ((CompactDualEulerCharacteristic * HorizonCliffordSpinorDim * HorizonSphereScalarCurvature : ℕ) : ℚ)
 
-def mkLinkAsymmetry (r1 r2 : ℕ) : ℚ :=
-  (r1 : ℚ) / ((r2 ^ r1 : ℕ) : ℚ)
-
 def LinkAPSSpectralAsymmetry : ℚ :=
-  mkLinkAsymmetry SymmetricSplitRank ShortRootMultiplicity
+  SymmetricSplitRankRat / ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ)
 
 def SingularLinkKernelIndex : ℚ :=
   PrimitiveIdempotentTraceRat /
@@ -290,19 +324,61 @@ def CurvedFrameTorusBoundaryDefect : ℚ :=
   CompactSubalgebraFrameTrace + FlatContractedGeodesicResidue +
   applyCurvedHorizonOp .curvedHorizonFrame ElementaryHorizonModularCell
 
+-- Isolate Binomial Channel Counts via UniqueLawSolution so `Nat.choose` never enters `ℚ` reduction
+abbrev SymmetricTensorChannelLaw (c_sym : ℕ) : Prop :=
+  c_sym = Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank
+
+def isolation_SymmetricTensorChannelCount : UniqueLawSolution SymmetricTensorChannelLaw where
+  survivor := CriticalComplexDimension * (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank)
+  satisfies_law := by decide
+  unique_survivor := by
+    intro c_sym
+    have hval : Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank =
+        CriticalComplexDimension * (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) := by decide
+    dsimp only [SymmetricTensorChannelLaw]
+    rw [hval]
+
 def SymmetricTensorChannelCount : ℕ :=
-  Nat.choose (CriticalComplexDimension + ShilovHorizonSphereDim + SymmetricSplitRank) SymmetricSplitRank
+  isolation_SymmetricTensorChannelCount.survivor
+
+abbrev BivectorChannelLaw (c_biv : ℕ) : Prop :=
+  c_biv = Nat.choose ShortRootMultiplicity SymmetricSplitRank
+
+def isolation_BivectorChannelCount : UniqueLawSolution BivectorChannelLaw where
+  survivor := ShortRootMultiplicity
+  satisfies_law := by decide
+  unique_survivor := by
+    intro c_biv
+    have hval : Nat.choose ShortRootMultiplicity SymmetricSplitRank = ShortRootMultiplicity := by decide
+    dsimp only [BivectorChannelLaw]
+    rw [hval]
+
+def BivectorChannelCount : ℕ := isolation_BivectorChannelCount.survivor
+
+abbrev DeterminantChannelLaw (c_det : ℕ) : Prop :=
+  c_det = Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree
+
+def isolation_DeterminantChannelCount : UniqueLawSolution DeterminantChannelLaw where
+  survivor := TimelikeSignatureRank
+  satisfies_law := by decide
+  unique_survivor := by
+    intro c_det
+    have hval : Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree = TimelikeSignatureRank := by decide
+    dsimp only [DeterminantChannelLaw]
+    rw [hval]
+
+def DeterminantChannelCount : ℕ := isolation_DeterminantChannelCount.survivor
 
 def SzegoUnipotentGradeShift : ℚ :=
   -(((SymmetricTensorChannelCount : ℚ) * ElementaryHorizonModularCell) /
     (SymmetricSplitRankRat * ((HorizonSphereScalarCurvature ^ SymmetricSplitRank : ℕ) : ℚ)))
 
 def SzegoBivectorGradeShift : ℚ :=
-  -(((Nat.choose ShortRootMultiplicity SymmetricSplitRank : ℕ) : ℚ) / (ShilovHorizonSphereDim : ℚ)) *
+  -((BivectorChannelCount : ℚ) / (ShilovHorizonSphereDim : ℚ)) *
     (ElementaryHorizonModularCell ^ SymmetricSplitRank)
 
 def SzegoDeterminantGradeShift : ℚ :=
-  -(((Nat.choose ShortRootMultiplicity ExteriorAlgebraTerminationDegree : ℕ) : ℚ) *
+  -((DeterminantChannelCount : ℚ) *
     (ElementaryHorizonModularCell ^ ExteriorAlgebraTerminationDegree))
 
 def SzegoClosedPolynomialTotalShift : ℚ :=
@@ -363,26 +439,18 @@ def InstantonPairingBaseQuantumCoeff : ℚ :=
   ((WeylSignOctantCount * SpatialHorizonIsometryCount : ℕ) : ℚ) /
   (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
 
-def mkLowestWeight (r1 r2 T : ℕ) : ℚ :=
-  (((r1 ^ r1 : ℕ) : ℚ) / (T : ℚ)) + ((mkLinkAsymmetry r1 r2) ^ r1)
-
 def LowestPairingEigenvalueWeight : ℚ :=
-  mkLowestWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
-
-def mkMiddleWeight (r1 r2 T : ℕ) : ℚ :=
-  ((r2 ^ r1 : ℕ) : ℚ) - ((r1 : ℚ) / (T : ℚ)) - mkLinkAsymmetry r1 r2
+  (((SymmetricSplitRank ^ SymmetricSplitRank : ℕ) : ℚ) / (ChiralWeylCyclicOrder : ℚ)) +
+  (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
 
 def MiddlePairingEigenvalueWeight : ℚ :=
-  mkMiddleWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
-
-def mkHighestWeight (u p_tr r1 r2 dS : ℕ) : ℚ :=
-  ((dS * (dS * (dS - u)) : ℕ) : ℚ) +
-  ((p_tr : ℚ) / mkLinkAsymmetry r1 r2) -
-  ((r1 : ℚ) / (r2 : ℚ))
+  ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ) -
+  (SymmetricSplitRankRat / (ChiralWeylCyclicOrder : ℚ)) - LinkAPSSpectralAsymmetry
 
 def HighestPairingEigenvalueWeight : ℚ :=
-  mkHighestWeight TimelikeSignatureRank PrimitiveIdempotentTrace
-    SymmetricSplitRank ShortRootMultiplicity ShilovHorizonSphereDim
+  ((ShilovHorizonSphereDim * HorizonSphereScalarCurvature : ℕ) : ℚ) +
+  (PrimitiveIdempotentTraceRat / LinkAPSSpectralAsymmetry) -
+  (SymmetricSplitRankRat / (ShortRootMultiplicity : ℚ))
 
 def InstantonWeightTotalSum : ℚ :=
   LowestPairingEigenvalueWeight + MiddlePairingEigenvalueWeight + HighestPairingEigenvalueWeight
@@ -397,80 +465,13 @@ def TopVolumeTransgressionPrefactor : ℚ :=
   (((CompactDualEulerCharacteristic : ℚ) * RestrictedWeylCasimirNormSq) ^ SubquadricSpacetimeDim) *
   QuadraticCosetAlignment
 
-theorem unit_low_lt_mid (u : ℕ) (hu : u = ([NullCapacity] : List ℕ).length) :
-    mkLowestWeight (u + u) ((u + u) + u) ((u + u) + u) <
-    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) := by
-  rw [List.length_singleton] at hu
-  subst hu
-  dsimp only [mkLowestWeight, mkMiddleWeight, mkLinkAsymmetry]
-  norm_num
-
-theorem unit_mid_lt_high (u : ℕ) (hu : u = ([NullCapacity] : List ℕ).length) :
-    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) <
-    mkHighestWeight u u (u + u) ((u + u) + u) ((u + u) + (u + u)) := by
-  rw [List.length_singleton] at hu
-  subst hu
-  dsimp only [mkMiddleWeight, mkHighestWeight, mkLinkAsymmetry]
-  norm_num
-
-theorem transfer_low_lt_mid {r1 r2 T : ℕ}
-    (hr1 : SymmetricSplitRank = r1)
-    (hr2 : ShortRootMultiplicity = r2)
-    (hT : ChiralWeylCyclicOrder = T)
-    (h : mkLowestWeight r1 r2 T < mkMiddleWeight r1 r2 T) :
-    LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight := by
-  dsimp only [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight]
-  subst hr1; subst hr2; subst hT
-  exact h
-
-theorem transfer_mid_lt_high {u p_tr r1 r2 T dS : ℕ}
-    (hu : TimelikeSignatureRank = u)
-    (hp : PrimitiveIdempotentTrace = p_tr)
-    (hr1 : SymmetricSplitRank = r1)
-    (hr2 : ShortRootMultiplicity = r2)
-    (hT : ChiralWeylCyclicOrder = T)
-    (hdS : ShilovHorizonSphereDim = dS)
-    (h : mkMiddleWeight r1 r2 T < mkHighestWeight u p_tr r1 r2 dS) :
-    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  dsimp only [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight]
-  subst hu; subst hp; subst hr1; subst hr2; subst hT; subst hdS
-  exact h
-
-theorem torus_defect_difference (a b c z : ℚ) (hz : z = (([] : List ℕ).length : ℚ)) :
-    (a + b + c) - (a + b + z) = c := by
-  rw [List.length_nil] at hz
-  subst hz
-  push_cast
-  ring
-
 theorem master_trilogy_relational_laws_verified :
     SubquadricSpacetimeDim = ShilovHorizonSphereDim ∧
     CurvedFrameTorusBoundaryDefect - FlatSplitTorusBoundaryDefect = ElementaryHorizonModularCell ∧
     UnpuncturedWeylHorizonTrace - MaximalLagrangianLinkDefect = SingularLinkKernelIndex ∧
     LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
-    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  have h2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := nat_c2
-  have h6 : ShortRootMultiplicity =
-      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
-    Eq.trans nat_c6 (congrArg (· + TimelikeSignatureRank) h2)
-  have h7 : ChiralWeylCyclicOrder =
-      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
-    Eq.trans nat_c7 h6
-  have h9 : ShilovHorizonSphereDim =
-      (TimelikeSignatureRank + TimelikeSignatureRank) +
-      (TimelikeSignatureRank + TimelikeSignatureRank) :=
-    Eq.trans nat_c9 (congrArg₂ (· + ·) h2 h2)
-  refine ⟨?_, ?_, ?_,
-    transfer_low_lt_mid h2 h6 h7 (unit_low_lt_mid TimelikeSignatureRank nat_c1),
-    transfer_mid_lt_high rfl nat_c3 h2 h6 h7 h9 (unit_mid_lt_high TimelikeSignatureRank nat_c1)⟩
-  · have h1 := nat_c1; have hc := involutive_codim_eq
-    have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
-    rw [List.length_singleton] at h1
-    omega
-  · exact torus_defect_difference CompactSubalgebraFrameTrace FlatContractedGeodesicResidue
-      ElementaryHorizonModularCell NullCapacityRat (congrArg Nat.cast nat_c0)
-  · dsimp only [MaximalLagrangianLinkDefect]
-    ring
+    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight :=
+  ⟨by decide, by decide, by decide, by decide, by decide⟩
 
 -- ============================================================================
 -- MASTER COMPILER READOUT LEDGER FOR THE COMPLETE TRILOGY
