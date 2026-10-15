@@ -180,11 +180,10 @@ def isolation_ExteriorAlgebraTerminationDegree :
   super_critical_incapable := by
     intro k hk hB
     dsimp only [CapableOfNonZeroExteriorGrade] at hB
-    have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
-      rw [nat_c0, List.length_nil]
-      exact Nat.choose_eq_zero_of_lt hk
-    rw [hchoose] at hB
-    exact (lt_irrefl _ hB).elim
+    have h0 := nat_c0
+    rw [List.length_nil] at h0
+    have hchoose : Nat.choose ShortRootMultiplicity k = 0 := Nat.choose_eq_zero_of_lt hk
+    omega
   unique_survivor := by
     intro k
     constructor
@@ -194,11 +193,10 @@ def isolation_ExteriorAlgebraTerminationDegree :
         dsimp only [CapableOfTopDeterminantCalibration] at hA
         omega
       dsimp only [CapableOfNonZeroExteriorGrade] at hB
-      have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
-        rw [nat_c0, List.length_nil]
-        exact Nat.choose_eq_zero_of_lt hgt
-      rw [hchoose] at hB
-      exact lt_irrefl _ hB
+      have h0 := nat_c0
+      rw [List.length_nil] at h0
+      have hchoose : Nat.choose ShortRootMultiplicity k = 0 := Nat.choose_eq_zero_of_lt hgt
+      omega
     · intro hk
       subst hk
       refine ⟨by dsimp only [CapableOfTopDeterminantCalibration]; omega, ?_⟩
@@ -245,8 +243,11 @@ def ElementaryHorizonModularCell : ℚ :=
   (CriticalComplexDimension : ℚ) /
   ((CompactDualEulerCharacteristic * HorizonCliffordSpinorDim * HorizonSphereScalarCurvature : ℕ) : ℚ)
 
+def mkLinkAsymmetry (r1 r2 : ℕ) : ℚ :=
+  (r1 : ℚ) / ((r2 ^ r1 : ℕ) : ℚ)
+
 def LinkAPSSpectralAsymmetry : ℚ :=
-  SymmetricSplitRankRat / ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ)
+  mkLinkAsymmetry SymmetricSplitRank ShortRootMultiplicity
 
 def SingularLinkKernelIndex : ℚ :=
   PrimitiveIdempotentTraceRat /
@@ -362,18 +363,26 @@ def InstantonPairingBaseQuantumCoeff : ℚ :=
   ((WeylSignOctantCount * SpatialHorizonIsometryCount : ℕ) : ℚ) /
   (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
 
+def mkLowestWeight (r1 r2 T : ℕ) : ℚ :=
+  (((r1 ^ r1 : ℕ) : ℚ) / (T : ℚ)) + ((mkLinkAsymmetry r1 r2) ^ r1)
+
 def LowestPairingEigenvalueWeight : ℚ :=
-  (((SymmetricSplitRank ^ SymmetricSplitRank : ℕ) : ℚ) / (ChiralWeylCyclicOrder : ℚ)) +
-  (LinkAPSSpectralAsymmetry ^ SymmetricSplitRank)
+  mkLowestWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
+
+def mkMiddleWeight (r1 r2 T : ℕ) : ℚ :=
+  ((r2 ^ r1 : ℕ) : ℚ) - ((r1 : ℚ) / (T : ℚ)) - mkLinkAsymmetry r1 r2
 
 def MiddlePairingEigenvalueWeight : ℚ :=
-  ((ShortRootMultiplicity ^ SymmetricSplitRank : ℕ) : ℚ) -
-  (SymmetricSplitRankRat / (ChiralWeylCyclicOrder : ℚ)) - LinkAPSSpectralAsymmetry
+  mkMiddleWeight SymmetricSplitRank ShortRootMultiplicity ChiralWeylCyclicOrder
+
+def mkHighestWeight (u p_tr r1 r2 dS : ℕ) : ℚ :=
+  ((dS * (dS * (dS - u)) : ℕ) : ℚ) +
+  ((p_tr : ℚ) / mkLinkAsymmetry r1 r2) -
+  ((r1 : ℚ) / (r2 : ℚ))
 
 def HighestPairingEigenvalueWeight : ℚ :=
-  ((ShilovHorizonSphereDim * HorizonSphereScalarCurvature : ℕ) : ℚ) +
-  (PrimitiveIdempotentTraceRat / LinkAPSSpectralAsymmetry) -
-  (SymmetricSplitRankRat / (ShortRootMultiplicity : ℚ))
+  mkHighestWeight TimelikeSignatureRank PrimitiveIdempotentTrace
+    SymmetricSplitRank ShortRootMultiplicity ShilovHorizonSphereDim
 
 def InstantonWeightTotalSum : ℚ :=
   LowestPairingEigenvalueWeight + MiddlePairingEigenvalueWeight + HighestPairingEigenvalueWeight
@@ -388,51 +397,44 @@ def TopVolumeTransgressionPrefactor : ℚ :=
   (((CompactDualEulerCharacteristic : ℚ) * RestrictedWeylCasimirNormSq) ^ SubquadricSpacetimeDim) *
   QuadraticCosetAlignment
 
--- Parameterized pairing hierarchy law (avoids any unfolding or kabstract search over Paper1 defs)
-def PairingHierarchyLaw (u p_tr r1 r2 T dS : ℕ) : Prop :=
-  let eta : ℚ := (r1 : ℚ) / ((r2 ^ r1 : ℕ) : ℚ)
-  let w_low : ℚ := (((r1 ^ r1 : ℕ) : ℚ) / (T : ℚ)) + (eta ^ r1)
-  let w_mid : ℚ := ((r2 ^ r1 : ℕ) : ℚ) - ((r1 : ℚ) / (T : ℚ)) - eta
-  let R_scal : ℕ := dS * (dS - u)
-  let w_high : ℚ := ((dS * R_scal : ℕ) : ℚ) + ((p_tr : ℚ) / eta) - ((r1 : ℚ) / (r2 : ℚ))
-  w_low < w_mid ∧ w_mid < w_high
-
-theorem pairing_hierarchy_on_unit (u : ℕ) (hu : u = ([NullCapacity] : List ℕ).length) :
-    PairingHierarchyLaw u u (u + u) (u + u + u) (u + u + u) ((u + u) + (u + u)) := by
+theorem unit_low_lt_mid (u : ℕ) (hu : u = ([NullCapacity] : List ℕ).length) :
+    mkLowestWeight (u + u) ((u + u) + u) ((u + u) + u) <
+    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) := by
   rw [List.length_singleton] at hu
   subst hu
-  dsimp only [PairingHierarchyLaw]
+  dsimp only [mkLowestWeight, mkMiddleWeight, mkLinkAsymmetry]
   norm_num
 
-theorem transfer_pairing_hierarchy {u p_tr r1 r2 T dS : ℕ}
-    (h_p : PrimitiveIdempotentTrace = p_tr)
-    (h_r1 : SymmetricSplitRank = r1)
-    (h_r2 : ShortRootMultiplicity = r2)
-    (h_T : ChiralWeylCyclicOrder = T)
-    (h_dS : ShilovHorizonSphereDim = dS)
-    (h_u : TimelikeSignatureRank = u)
-    (h_law : PairingHierarchyLaw u p_tr r1 r2 T dS) :
-    LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
-    MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  subst h_p; subst h_r1; subst h_r2; subst h_T; subst h_dS; subst h_u
-  exact h_law
+theorem unit_mid_lt_high (u : ℕ) (hu : u = ([NullCapacity] : List ℕ).length) :
+    mkMiddleWeight (u + u) ((u + u) + u) ((u + u) + u) <
+    mkHighestWeight u u (u + u) ((u + u) + u) ((u + u) + (u + u)) := by
+  rw [List.length_singleton] at hu
+  subst hu
+  dsimp only [mkMiddleWeight, mkHighestWeight, mkLinkAsymmetry]
+  norm_num
 
-theorem paper3_pairing_hierarchy_verified :
-    LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
+theorem transfer_low_lt_mid {r1 r2 T : ℕ}
+    (hr1 : SymmetricSplitRank = r1)
+    (hr2 : ShortRootMultiplicity = r2)
+    (hT : ChiralWeylCyclicOrder = T)
+    (h : mkLowestWeight r1 r2 T < mkMiddleWeight r1 r2 T) :
+    LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight := by
+  dsimp only [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight]
+  subst hr1; subst hr2; subst hT
+  exact h
+
+theorem transfer_mid_lt_high {u p_tr r1 r2 T dS : ℕ}
+    (hu : TimelikeSignatureRank = u)
+    (hp : PrimitiveIdempotentTrace = p_tr)
+    (hr1 : SymmetricSplitRank = r1)
+    (hr2 : ShortRootMultiplicity = r2)
+    (hT : ChiralWeylCyclicOrder = T)
+    (hdS : ShilovHorizonSphereDim = dS)
+    (h : mkMiddleWeight r1 r2 T < mkHighestWeight u p_tr r1 r2 dS) :
     MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  have h2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := nat_c2
-  have h6 : ShortRootMultiplicity =
-      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
-    Eq.trans nat_c6 (congrArg (· + TimelikeSignatureRank) h2)
-  have h7 : ChiralWeylCyclicOrder =
-      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
-    Eq.trans nat_c7 h6
-  have h9 : ShilovHorizonSphereDim =
-      (TimelikeSignatureRank + TimelikeSignatureRank) +
-      (TimelikeSignatureRank + TimelikeSignatureRank) :=
-    Eq.trans nat_c9 (congrArg₂ (· + ·) h2 h2)
-  exact transfer_pairing_hierarchy nat_c3 h2 h6 h7 h9 rfl
-    (pairing_hierarchy_on_unit TimelikeSignatureRank nat_c1)
+  dsimp only [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight]
+  subst hu; subst hp; subst hr1; subst hr2; subst hT; subst hdS
+  exact h
 
 theorem torus_defect_difference (a b c z : ℚ) (hz : z = (([] : List ℕ).length : ℚ)) :
     (a + b + c) - (a + b + z) = c := by
@@ -447,9 +449,22 @@ theorem master_trilogy_relational_laws_verified :
     UnpuncturedWeylHorizonTrace - MaximalLagrangianLinkDefect = SingularLinkKernelIndex ∧
     LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
     MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  refine ⟨?_, ?_, ?_, paper3_pairing_hierarchy_verified.1, paper3_pairing_hierarchy_verified.2⟩
-  · have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9
-    have hc := involutive_codim_eq; have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
+  have h2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := nat_c2
+  have h6 : ShortRootMultiplicity =
+      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
+    Eq.trans nat_c6 (congrArg (· + TimelikeSignatureRank) h2)
+  have h7 : ChiralWeylCyclicOrder =
+      (TimelikeSignatureRank + TimelikeSignatureRank) + TimelikeSignatureRank :=
+    Eq.trans nat_c7 h6
+  have h9 : ShilovHorizonSphereDim =
+      (TimelikeSignatureRank + TimelikeSignatureRank) +
+      (TimelikeSignatureRank + TimelikeSignatureRank) :=
+    Eq.trans nat_c9 (congrArg₂ (· + ·) h2 h2)
+  refine ⟨?_, ?_, ?_,
+    transfer_low_lt_mid h2 h6 h7 (unit_low_lt_mid TimelikeSignatureRank nat_c1),
+    transfer_mid_lt_high rfl nat_c3 h2 h6 h7 h9 (unit_mid_lt_high TimelikeSignatureRank nat_c1)⟩
+  · have h1 := nat_c1; have hc := involutive_codim_eq
+    have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
     rw [List.length_singleton] at h1
     omega
   · exact torus_defect_difference CompactSubalgebraFrameTrace FlatContractedGeodesicResidue
