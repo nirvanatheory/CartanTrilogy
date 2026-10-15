@@ -589,5 +589,11 @@ def buildCompleteTrilogyReadout : CompleteTrilogyReadout :=
     } }
 
 #eval buildCompleteTrilogyReadout
+#print axioms Paper1.jordan_cubic_identity
+#print axioms Paper1.dimensional_uniqueness_theorem
+#print axioms Paper2.sharp_pvm_idempotence_is_invalid
+#print axioms Paper2.isotropic_wavefront_interval_vanishes
+#print axioms Paper3.master_trilogy_relational_laws_verified
+
 
 end Paper3
