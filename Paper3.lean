@@ -399,21 +399,32 @@ theorem master_trilogy_relational_laws_verified :
     have hc := involutive_codim_eq; have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
     rw [List.length_singleton] at h1
     omega
-  · dsimp only [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect,
-      applyCurvedHorizonOp, NullCapacityRat]
-    rw [nat_c0, List.length_nil]
-    push_cast
+  · dsimp [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect,
+      applyCurvedHorizonOp, NullCapacityRat, NullCapacity, isolation_NullCapacity,
+      VanishingListLength, EmptyRayList]
     ring
   · dsimp only [MaximalLagrangianLinkDefect]
     ring
-  · dsimp only [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight,
-      LinkAPSSpectralAsymmetry, SymmetricSplitRankRat]
-    rw [nat_c7, nat_c6, nat_c2, nat_c1, List.length_singleton]
+  · dsimp [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight,
+      LinkAPSSpectralAsymmetry, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
+      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
+      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension, PrimitiveIdempotentTrace,
+      isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
+      JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
+      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
-  · dsimp only [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight,
-      HorizonSphereScalarCurvature, LinkAPSSpectralAsymmetry,
-      PrimitiveIdempotentTraceRat, SymmetricSplitRankRat]
-    rw [nat_c9, nat_c7, nat_c6, nat_c3, nat_c2, nat_c1, List.length_singleton]
+  · dsimp [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight,
+      HorizonSphereScalarCurvature, ShilovHorizonSphereDim, isolation_ShilovHorizonSphereDim,
+      CriticalComplexDimension, isolation_CriticalComplexDimension,
+      LinkAPSSpectralAsymmetry, ChiralWeylCyclicOrder, isolation_ChiralWeylCyclicOrder,
+      ShortRootMultiplicity, isolation_ShortRootMultiplicity, HyperkahlerSliceComplexDim,
+      isolation_HyperkahlerSliceComplexDim, DiagonalAxisDimension,
+      PrimitiveIdempotentTraceRat, PrimitiveIdempotentTrace,
+      isolation_PrimitiveIdempotentTrace, SymmetricSplitRankRat, SymmetricSplitRank,
+      JordanAlgebraRank, isolation_JordanAlgebraRank, TimelikeSignatureRank,
+      isolation_TimelikeSignatureRank, SingletonRayCardinality, ProjectiveRaySingleton,
+      NullCapacity, isolation_NullCapacity, VanishingListLength, EmptyRayList]
     norm_num
 
 -- ============================================================================
@@ -421,56 +432,107 @@ theorem master_trilogy_relational_laws_verified :
 -- ============================================================================
 
 structure CompleteTrilogyReadout where
-  paper1 : Paper1Readout := {}
-  cartanDomainGenus : ℕ := CartanDomainGenus
-  poissonSzegoKernelExponent : ℕ := PoissonSzegoKernelExponent
-  cauchySzegoHardyExponent : ℚ := CauchySzegoHardyExponent
-  involutiveSubquadricCodim : ℕ := InvolutiveSubquadricCodim
-  cauchySpatialSphereDim : ℕ := CauchySpatialSphereDim
-  subquadricSpacetimeDim : ℕ := SubquadricSpacetimeDim
-  parabolicUnipotentTerminationDeg : ℕ := ParabolicUnipotentTerminationDegree
-  exteriorAlgebraTerminationDeg : ℕ := ExteriorAlgebraTerminationDegree
-  compactDualEulerCharacteristic : ℕ := CompactDualEulerCharacteristic
-  horizonSphereScalarCurvature : ℕ := HorizonSphereScalarCurvature
-  horizonCliffordSpinorDim : ℕ := HorizonCliffordSpinorDim
-  horizonDiracGapEigenvalue : ℕ := HorizonDiracSpectralGapEigenvalue
-  elementaryHorizonModularCell : ℚ := ElementaryHorizonModularCell
-  linkAPSSpectralAsymmetry : ℚ := LinkAPSSpectralAsymmetry
-  singularLinkKernelIndex : ℚ := SingularLinkKernelIndex
-  flatContractedGeodesicResidue : ℚ := FlatContractedGeodesicResidue
-  maximalLagrangianLinkDefect : ℚ := MaximalLagrangianLinkDefect
-  bareExceptionalDivisorSeed : ℚ := BareExceptionalDivisorSeed
-  orbifoldIntersectionHeatTrace : ℕ := OrbifoldIntersectionHeatTrace
-  anomalousRankScalingExponent : ℚ := AnomalousRankScalingExponent
-  flatSplitTorusBoundaryDefect : ℚ := FlatSplitTorusBoundaryDefect
-  curvedFrameTorusBoundaryDefect : ℚ := CurvedFrameTorusBoundaryDefect
-  szegoUnipotentGradeShift : ℚ := SzegoUnipotentGradeShift
-  szegoBivectorGradeShift : ℚ := SzegoBivectorGradeShift
-  szegoDeterminantGradeShift : ℚ := SzegoDeterminantGradeShift
-  szegoClosedPolynomialTotalShift : ℚ := SzegoClosedPolynomialTotalShift
-  bareStabilizerCasimirRatio : ℚ := BareStabilizerCasimirRatio
-  closedStabilizerCasimirRatio : ℚ := ClosedStabilizerCasimirRatio
-  primaryCommutantEulerModulus : ℚ := PrimaryCommutantEulerModulus
-  splitCartanEulerModulus : ℚ := SplitCartanEulerModulus
-  bareCrossChannelEulerModulus : ℚ := BareCrossChannelEulerModulus
-  closedCrossChannelEulerModulus : ℚ := ClosedCrossChannelEulerModulus
-  quadraticCosetAlignment : ℚ := QuadraticCosetAlignment
-  bareHolonomyAspectTangent : ℚ := BareHolonomyAspectTangent
-  closedHolonomyAspectTangent : ℚ := ClosedHolonomyAspectTangent
-  linearTwistedLinkMode : ℚ := LinearTwistedLinkMode
-  quadraticTwistedLinkMode : ℚ := QuadraticTwistedLinkMode
-  twistedHierarchyRatio : ℚ := TwistedHierarchyRatio
-  cubicTwistedLinkMode : ℚ := CubicTwistedLinkMode
-  instantonPairingBaseQuantumCoeff : ℚ := InstantonPairingBaseQuantumCoeff
-  lowestPairingEigenvalueWeight : ℚ := LowestPairingEigenvalueWeight
-  middlePairingEigenvalueWeight : ℚ := MiddlePairingEigenvalueWeight
-  highestPairingEigenvalueWeight : ℚ := HighestPairingEigenvalueWeight
-  instantonWeightTotalSum : ℚ := InstantonWeightTotalSum
-  instantonPairingTotalTraceCoeff : ℚ := InstantonPairingTotalTraceCoeff
-  topVolumeInstantonExponent : ℕ := TopVolumeInstantonExponent
-  topVolumeTransgressionPrefactor : ℚ := TopVolumeTransgressionPrefactor
+  paper1 : Paper1Readout
+  cartanDomainGenus : ℕ
+  poissonSzegoKernelExponent : ℕ
+  cauchySzegoHardyExponent : ℚ
+  involutiveSubquadricCodim : ℕ
+  cauchySpatialSphereDim : ℕ
+  subquadricSpacetimeDim : ℕ
+  parabolicUnipotentTerminationDeg : ℕ
+  exteriorAlgebraTerminationDeg : ℕ
+  compactDualEulerCharacteristic : ℕ
+  horizonSphereScalarCurvature : ℕ
+  horizonCliffordSpinorDim : ℕ
+  horizonDiracGapEigenvalue : ℕ
+  elementaryHorizonModularCell : ℚ
+  linkAPSSpectralAsymmetry : ℚ
+  singularLinkKernelIndex : ℚ
+  flatContractedGeodesicResidue : ℚ
+  maximalLagrangianLinkDefect : ℚ
+  bareExceptionalDivisorSeed : ℚ
+  orbifoldIntersectionHeatTrace : ℕ
+  anomalousRankScalingExponent : ℚ
+  flatSplitTorusBoundaryDefect : ℚ
+  curvedFrameTorusBoundaryDefect : ℚ
+  szegoUnipotentGradeShift : ℚ
+  szegoBivectorGradeShift : ℚ
+  szegoDeterminantGradeShift : ℚ
+  szegoClosedPolynomialTotalShift : ℚ
+  bareStabilizerCasimirRatio : ℚ
+  closedStabilizerCasimirRatio : ℚ
+  primaryCommutantEulerModulus : ℚ
+  splitCartanEulerModulus : ℚ
+  bareCrossChannelEulerModulus : ℚ
+  closedCrossChannelEulerModulus : ℚ
+  quadraticCosetAlignment : ℚ
+  bareHolonomyAspectTangent : ℚ
+  closedHolonomyAspectTangent : ℚ
+  linearTwistedLinkMode : ℚ
+  quadraticTwistedLinkMode : ℚ
+  twistedHierarchyRatio : ℚ
+  cubicTwistedLinkMode : ℚ
+  instantonPairingBaseQuantumCoeff : ℚ
+  lowestPairingEigenvalueWeight : ℚ
+  middlePairingEigenvalueWeight : ℚ
+  highestPairingEigenvalueWeight : ℚ
+  instantonWeightTotalSum : ℚ
+  instantonPairingTotalTraceCoeff : ℚ
+  topVolumeInstantonExponent : ℕ
+  topVolumeTransgressionPrefactor : ℚ
   deriving Repr
 
-#eval ({} : CompleteTrilogyReadout)
+def buildCompleteTrilogyReadout : CompleteTrilogyReadout :=
+  let p1 : Paper1Readout := {}
+  { paper1 := p1
+    cartanDomainGenus := CartanDomainGenus
+    poissonSzegoKernelExponent := PoissonSzegoKernelExponent
+    cauchySzegoHardyExponent := CauchySzegoHardyExponent
+    involutiveSubquadricCodim := InvolutiveSubquadricCodim
+    cauchySpatialSphereDim := CauchySpatialSphereDim
+    subquadricSpacetimeDim := SubquadricSpacetimeDim
+    parabolicUnipotentTerminationDeg := ParabolicUnipotentTerminationDegree
+    exteriorAlgebraTerminationDeg := ExteriorAlgebraTerminationDegree
+    compactDualEulerCharacteristic := CompactDualEulerCharacteristic
+    horizonSphereScalarCurvature := HorizonSphereScalarCurvature
+    horizonCliffordSpinorDim := HorizonCliffordSpinorDim
+    horizonDiracGapEigenvalue := HorizonDiracSpectralGapEigenvalue
+    elementaryHorizonModularCell := ElementaryHorizonModularCell
+    linkAPSSpectralAsymmetry := LinkAPSSpectralAsymmetry
+    singularLinkKernelIndex := SingularLinkKernelIndex
+    flatContractedGeodesicResidue := FlatContractedGeodesicResidue
+    maximalLagrangianLinkDefect := MaximalLagrangianLinkDefect
+    bareExceptionalDivisorSeed := BareExceptionalDivisorSeed
+    orbifoldIntersectionHeatTrace := OrbifoldIntersectionHeatTrace
+    anomalousRankScalingExponent := AnomalousRankScalingExponent
+    flatSplitTorusBoundaryDefect := FlatSplitTorusBoundaryDefect
+    curvedFrameTorusBoundaryDefect := CurvedFrameTorusBoundaryDefect
+    szegoUnipotentGradeShift := SzegoUnipotentGradeShift
+    szegoBivectorGradeShift := SzegoBivectorGradeShift
+    szegoDeterminantGradeShift := SzegoDeterminantGradeShift
+    szegoClosedPolynomialTotalShift := SzegoClosedPolynomialTotalShift
+    bareStabilizerCasimirRatio := BareStabilizerCasimirRatio
+    closedStabilizerCasimirRatio := ClosedStabilizerCasimirRatio
+    primaryCommutantEulerModulus := PrimaryCommutantEulerModulus
+    splitCartanEulerModulus := SplitCartanEulerModulus
+    bareCrossChannelEulerModulus := BareCrossChannelEulerModulus
+    closedCrossChannelEulerModulus := ClosedCrossChannelEulerModulus
+    quadraticCosetAlignment := QuadraticCosetAlignment
+    bareHolonomyAspectTangent := BareHolonomyAspectTangent
+    closedHolonomyAspectTangent := ClosedHolonomyAspectTangent
+    linearTwistedLinkMode := LinearTwistedLinkMode
+    quadraticTwistedLinkMode := QuadraticTwistedLinkMode
+    twistedHierarchyRatio := TwistedHierarchyRatio
+    cubicTwistedLinkMode := CubicTwistedLinkMode
+    instantonPairingBaseQuantumCoeff := InstantonPairingBaseQuantumCoeff
+    lowestPairingEigenvalueWeight := LowestPairingEigenvalueWeight
+    middlePairingEigenvalueWeight := MiddlePairingEigenvalueWeight
+    highestPairingEigenvalueWeight := HighestPairingEigenvalueWeight
+    instantonWeightTotalSum := InstantonWeightTotalSum
+    instantonPairingTotalTraceCoeff := InstantonPairingTotalTraceCoeff
+    topVolumeInstantonExponent := TopVolumeInstantonExponent
+    topVolumeTransgressionPrefactor := TopVolumeTransgressionPrefactor }
+
+#eval buildCompleteTrilogyReadout
 
 end Paper3
