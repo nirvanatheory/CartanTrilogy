@@ -415,15 +415,17 @@ theorem low_eq_unit :
     LowestPairingEigenvalueWeight =
     mkLowestWeight (UnitLength + UnitLength)
       (UnitLength + UnitLength + UnitLength)
-      (UnitLength + UnitLength + UnitLength) :=
-  congrArg₃ mkLowestWeight bridge_r1 bridge_r2 bridge_T
+      (UnitLength + UnitLength + UnitLength) := by
+  dsimp only [LowestPairingEigenvalueWeight]
+  rw [bridge_r1, bridge_r2, bridge_T]
 
 theorem mid_eq_unit :
     MiddlePairingEigenvalueWeight =
     mkMiddleWeight (UnitLength + UnitLength)
       (UnitLength + UnitLength + UnitLength)
-      (UnitLength + UnitLength + UnitLength) :=
-  congrArg₃ mkMiddleWeight bridge_r1 bridge_r2 bridge_T
+      (UnitLength + UnitLength + UnitLength) := by
+  dsimp only [MiddlePairingEigenvalueWeight]
+  rw [bridge_r1, bridge_r2, bridge_T]
 
 theorem high_eq_unit :
     HighestPairingEigenvalueWeight =
