@@ -3,7 +3,6 @@
 [![Lean 4 Formal Verification](https://github.com/nirvanatheory/CartanTrilogy/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/nirvanatheory/CartanTrilogy/actions/workflows/lean_action_ci.yml)
 
 **Verification Engine:** Lean 4 (`leanprover/lean4:v4.14.0`) + `Mathlib4` (`4bbdccd9`)  
-**Verified Baseline Commit:** `8c32710`  
 **Strict Deductive Constraints:** Zero numeric literals (`[0-9]`, `Nat.zero`, `Nat.succ`), zero free parameters, zero custom `axiom` declarations, and zero `sorry` placeholders.
 
 ---
@@ -62,11 +61,12 @@ At the level of the Lean 4 C++ kernel, all proofs rely exclusively on the rules 
 
 All ground-state capability checks and dimensional bridge identities proven via `rfl` or `decide` are verified purely by kernel definitional reduction (`does not depend on any axioms`).
 
-To audit the axiom footprint of the primary theorems directly, append the following commands to `Paper3.lean`:
+Compiler output from `#print axioms` during `lake build`:
 
-```lean
-#print axioms Paper1.jordan_cubic_identity
-#print axioms Paper1.dimensional_uniqueness_theorem
-#print axioms Paper2.sharp_pvm_idempotence_is_invalid
-#print axioms Paper2.isotropic_wavefront_interval_vanishes
-#print axioms Paper3.master_trilogy_relational_laws_verified
+```text
+info: ././././Paper3.lean:592:0: 'Paper1.jordan_cubic_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././Paper3.lean:593:0: 'Paper1.dimensional_uniqueness_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././Paper3.lean:594:0: 'Paper2.sharp_pvm_idempotence_is_invalid' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././Paper3.lean:595:0: 'Paper2.isotropic_wavefront_interval_vanishes' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: ././././Paper3.lean:596:0: 'Paper3.master_trilogy_relational_laws_verified' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully.
