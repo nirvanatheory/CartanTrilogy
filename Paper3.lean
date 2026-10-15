@@ -13,21 +13,19 @@ open Paper2
 -/
 
 -- ============================================================================
--- KERNEL-VERIFIED BASE IDENTITIES (Verified by pure `rfl` in 0ms)
+-- KERNEL-VERIFIED NATURAL NUMBER IDENTITIES (Pure `ℕ` `rfl`, 0ms)
 -- ============================================================================
 
-theorem paper1_base_identities :
-    NullCapacity = ([] : List ℕ).length ∧
-    TimelikeSignatureRank = ([NullCapacity] : List ℕ).length ∧
-    SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank ∧
-    PrimitiveIdempotentTrace = TimelikeSignatureRank ∧
-    RestrictedLongRootMultiplicity = TimelikeSignatureRank ∧
-    HyperkahlerSliceComplexDim = SymmetricSplitRank ∧
-    ShortRootMultiplicity = SymmetricSplitRank + TimelikeSignatureRank ∧
-    ChiralWeylCyclicOrder = ShortRootMultiplicity ∧
-    CriticalComplexDimension = SymmetricSplitRank + ShortRootMultiplicity ∧
-    ShilovHorizonSphereDim = SymmetricSplitRank + SymmetricSplitRank :=
-  ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
+theorem nat_c0 : NullCapacity = ([] : List ℕ).length := rfl
+theorem nat_c1 : TimelikeSignatureRank = ([NullCapacity] : List ℕ).length := rfl
+theorem nat_c2 : SymmetricSplitRank = TimelikeSignatureRank + TimelikeSignatureRank := rfl
+theorem nat_c3 : PrimitiveIdempotentTrace = TimelikeSignatureRank := rfl
+theorem nat_c4 : RestrictedLongRootMultiplicity = TimelikeSignatureRank := rfl
+theorem nat_c5 : HyperkahlerSliceComplexDim = SymmetricSplitRank := rfl
+theorem nat_c6 : ShortRootMultiplicity = SymmetricSplitRank + TimelikeSignatureRank := rfl
+theorem nat_c7 : ChiralWeylCyclicOrder = ShortRootMultiplicity := rfl
+theorem nat_c8 : CriticalComplexDimension = SymmetricSplitRank + ShortRootMultiplicity := rfl
+theorem nat_c9 : ShilovHorizonSphereDim = SymmetricSplitRank + SymmetricSplitRank := rfl
 
 -- ============================================================================
 -- STEP 12: Isolation of the Lorentzian Subquadric M⁴ ⊂ Q₅
@@ -42,33 +40,33 @@ def isolation_InvolutiveSubquadricCodim :
     IntersectionIsolation CapableOfNormalFluxConfinement CapableOfEmbeddingSingularLensLink where
   survivor := TimelikeSignatureRank
   capable_A := by
-    have ⟨h0, h1, _, _, _, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNormalFluxConfinement]
+    have h0 := nat_c0; have h1 := nat_c1
+    dsimp only [CapableOfNormalFluxConfinement]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
   capable_B := by
-    have ⟨h0, h1, h2, _, _, _, h6, _, _, h9⟩ := paper1_base_identities
-    dsimp [CapableOfEmbeddingSingularLensLink]
+    have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    dsimp only [CapableOfEmbeddingSingularLensLink]
     rw [List.length_singleton] at h1
     omega
   sub_critical_incapable := by
     intro c hc hA
-    have ⟨h0, h1, _, _, _, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNormalFluxConfinement] at hA
+    have h0 := nat_c0; have h1 := nat_c1
+    dsimp only [CapableOfNormalFluxConfinement] at hA
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
   super_critical_incapable := by
     intro c hc hB
-    have ⟨h0, h1, h2, _, _, _, h6, _, _, h9⟩ := paper1_base_identities
-    dsimp [CapableOfEmbeddingSingularLensLink] at hB
+    have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    dsimp only [CapableOfEmbeddingSingularLensLink] at hB
     rw [List.length_singleton] at h1
     omega
   unique_survivor := by
     intro c
-    have ⟨h0, h1, h2, _, _, _, h6, _, _, h9⟩ := paper1_base_identities
-    dsimp [CapableOfNormalFluxConfinement, CapableOfEmbeddingSingularLensLink]
+    have h0 := nat_c0; have h1 := nat_c1; have h2 := nat_c2; have h6 := nat_c6; have h9 := nat_c9
+    dsimp only [CapableOfNormalFluxConfinement, CapableOfEmbeddingSingularLensLink]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
@@ -83,16 +81,14 @@ def CauchySliceCodimLaw (d_s : ℕ) : Prop :=
 def isolation_CauchySpatialSphereDim : UniqueLawSolution CauchySliceCodimLaw where
   survivor := ShilovHorizonSphereDim - InvolutiveSubquadricCodim
   satisfies_law := by
-    have ⟨_, h1, h2, _, _, _, _, _, _, h9⟩ := paper1_base_identities
-     have hcodim := involutive_codim_eq
-    dsimp [CauchySliceCodimLaw]
+    have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9; have hc := involutive_codim_eq
+    dsimp only [CauchySliceCodimLaw]
     rw [List.length_singleton] at h1
     omega
   unique_survivor := by
     intro d_s
-    have ⟨_, h1, h2, _, _, _, _, _, _, h9⟩ := paper1_base_identities
-    have hcodim := involutive_codim_eq
-    dsimp [CauchySliceCodimLaw]
+    have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9; have hc := involutive_codim_eq
+    dsimp only [CauchySliceCodimLaw]
     rw [List.length_singleton] at h1
     omega
 
@@ -107,14 +103,17 @@ def SubquadricSpacetimeLaw (d_M : ℕ) : Prop :=
 def isolation_SubquadricSpacetimeDim : UniqueLawSolution SubquadricSpacetimeLaw where
   survivor := CauchySpatialSphereDim + TimelikeSignatureRank
   satisfies_law := by
-    dsimp [SubquadricSpacetimeLaw]
+    dsimp only [SubquadricSpacetimeLaw]
     omega
   unique_survivor := by
     intro d_M
-    dsimp [SubquadricSpacetimeLaw]
+    dsimp only [SubquadricSpacetimeLaw]
     omega
 
 def SubquadricSpacetimeDim : ℕ := isolation_SubquadricSpacetimeDim.survivor
+
+theorem spacetime_dim_eq :
+    SubquadricSpacetimeDim = CauchySpatialSphereDim + TimelikeSignatureRank := rfl
 
 -- ============================================================================
 -- STEP 13: Parabolic |1|-Grading Termination and Superselection Rules
@@ -127,29 +126,29 @@ def isolation_ParabolicUnipotentTerminationDegree :
     IntersectionIsolation CapableOfNonTrivialNilpotentTransport CapableOfAbelianUnipotentClosure where
   survivor := RestrictedLongRootMultiplicity
   capable_A := by
-    have ⟨h0, h1, _, _, h4, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNonTrivialNilpotentTransport]
+    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    dsimp only [CapableOfNonTrivialNilpotentTransport]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
   capable_B := by
-    dsimp [CapableOfAbelianUnipotentClosure]
+    dsimp only [CapableOfAbelianUnipotentClosure]
     omega
   sub_critical_incapable := by
     intro k hk hA
-    have ⟨h0, h1, _, _, h4, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNonTrivialNilpotentTransport] at hA
+    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    dsimp only [CapableOfNonTrivialNilpotentTransport] at hA
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
   super_critical_incapable := by
     intro k hk hB
-    dsimp [CapableOfAbelianUnipotentClosure] at hB
+    dsimp only [CapableOfAbelianUnipotentClosure] at hB
     omega
   unique_survivor := by
     intro k
-    have ⟨h0, h1, _, _, h4, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNonTrivialNilpotentTransport, CapableOfAbelianUnipotentClosure]
+    have h0 := nat_c0; have h1 := nat_c1; have h4 := nat_c4
+    dsimp only [CapableOfNonTrivialNilpotentTransport, CapableOfAbelianUnipotentClosure]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
@@ -165,24 +164,24 @@ def isolation_ExteriorAlgebraTerminationDegree :
     IntersectionIsolation CapableOfTopDeterminantCalibration CapableOfNonZeroExteriorGrade where
   survivor := ShortRootMultiplicity
   capable_A := by
-    dsimp [CapableOfTopDeterminantCalibration]
+    dsimp only [CapableOfTopDeterminantCalibration]
     omega
   capable_B := by
-    have ⟨h0, h1, _, _, _, _, _, _, _, _⟩ := paper1_base_identities
-    dsimp [CapableOfNonZeroExteriorGrade]
+    have h0 := nat_c0; have h1 := nat_c1
+    dsimp only [CapableOfNonZeroExteriorGrade]
     rw [Nat.choose_self]
     rw [List.length_nil] at h0
     rw [List.length_singleton] at h1
     omega
   sub_critical_incapable := by
     intro k hk hA
-    dsimp [CapableOfTopDeterminantCalibration] at hA
+    dsimp only [CapableOfTopDeterminantCalibration] at hA
     omega
   super_critical_incapable := by
     intro k hk hB
-    dsimp [CapableOfNonZeroExteriorGrade] at hB
+    dsimp only [CapableOfNonZeroExteriorGrade] at hB
     have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
-      rw [NullCapacity_val, List.length_nil]
+      rw [nat_c0, List.length_nil]
       exact Nat.choose_eq_zero_of_lt hk
     rw [hchoose] at hB
     exact (lt_irrefl _ hB).elim
@@ -192,19 +191,19 @@ def isolation_ExteriorAlgebraTerminationDegree :
     · intro ⟨hA, hB⟩
       by_contra hne
       have hgt : k > ShortRootMultiplicity := by
-        dsimp [CapableOfTopDeterminantCalibration] at hA
+        dsimp only [CapableOfTopDeterminantCalibration] at hA
         omega
-      dsimp [CapableOfNonZeroExteriorGrade] at hB
+      dsimp only [CapableOfNonZeroExteriorGrade] at hB
       have hchoose : Nat.choose ShortRootMultiplicity k = NullCapacity := by
-        rw [NullCapacity_val, List.length_nil]
+        rw [nat_c0, List.length_nil]
         exact Nat.choose_eq_zero_of_lt hgt
       rw [hchoose] at hB
       exact lt_irrefl _ hB
     · intro hk
       subst hk
-      refine ⟨by dsimp [CapableOfTopDeterminantCalibration]; omega, ?_⟩
-      have ⟨h0, h1, _, _, _, _, _, _, _, _⟩ := paper1_base_identities
-      dsimp [CapableOfNonZeroExteriorGrade]
+      refine ⟨by dsimp only [CapableOfTopDeterminantCalibration]; omega, ?_⟩
+      have h0 := nat_c0; have h1 := nat_c1
+      dsimp only [CapableOfNonZeroExteriorGrade]
       rw [Nat.choose_self]
       rw [List.length_nil] at h0
       rw [List.length_singleton] at h1
@@ -395,52 +394,26 @@ theorem master_trilogy_relational_laws_verified :
     UnpuncturedWeylHorizonTrace - MaximalLagrangianLinkDefect = SingularLinkKernelIndex ∧
     LowestPairingEigenvalueWeight < MiddlePairingEigenvalueWeight ∧
     MiddlePairingEigenvalueWeight < HighestPairingEigenvalueWeight := by
-  refine ⟨rfl, ?_, ?_, ?_, ?_⟩
-  · have h0 : NullCapacityRat = (([] : List ℕ).length : ℚ) := rfl
-    dsimp [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect, applyCurvedHorizonOp]
-    rw [h0, List.length_nil]
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · have h1 := nat_c1; have h2 := nat_c2; have h9 := nat_c9
+    have hc := involutive_codim_eq; have hs := cauchy_spatial_eq; have hm := spacetime_dim_eq
+    rw [List.length_singleton] at h1
+    omega
+  · dsimp only [CurvedFrameTorusBoundaryDefect, FlatSplitTorusBoundaryDefect,
+      applyCurvedHorizonOp, NullCapacityRat]
+    rw [nat_c0, List.length_nil]
     push_cast
     ring
-  · dsimp [MaximalLagrangianLinkDefect]
+  · dsimp only [MaximalLagrangianLinkDefect]
     ring
-  · have h_eta : LinkAPSSpectralAsymmetry =
-        ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ) /
-        (((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) ^
-          (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) : ℕ) : ℚ) := rfl
-    have h_low : LowestPairingEigenvalueWeight =
-        ((((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) ^
-          (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) : ℕ) : ℚ) /
-        ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ)) +
-        (LinkAPSSpectralAsymmetry ^ (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length)) := rfl
-    have h_mid : MiddlePairingEigenvalueWeight =
-        ((((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) ^
-          (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) : ℕ) : ℚ) -
-        (((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ) /
-          ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ)) -
-        LinkAPSSpectralAsymmetry) := rfl
-    rw [h_low, h_mid, h_eta, List.length_singleton]
+  · dsimp only [LowestPairingEigenvalueWeight, MiddlePairingEigenvalueWeight,
+      LinkAPSSpectralAsymmetry, SymmetricSplitRankRat]
+    rw [nat_c7, nat_c6, nat_c2, nat_c1, List.length_singleton]
     norm_num
-  · have h_eta : LinkAPSSpectralAsymmetry =
-        ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ) /
-        (((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) ^
-          (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) : ℕ) : ℚ) := rfl
-    have h_mid : MiddlePairingEigenvalueWeight =
-        ((((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) ^
-          (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) : ℕ) : ℚ) -
-        (((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ) /
-          ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ)) -
-        LinkAPSSpectralAsymmetry) := rfl
-    have h_high : HighestPairingEigenvalueWeight =
-        ((((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length +
-            ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) *
-           ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length +
-             ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length) *
-            (([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length +
-             ([NullCapacity] : List ℕ).length))) : ℕ) : ℚ) +
-        ((([NullCapacity] : List ℕ).length : ℚ) / LinkAPSSpectralAsymmetry) -
-        (((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ) /
-         ((([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length + ([NullCapacity] : List ℕ).length : ℕ) : ℚ)) := rfl
-    rw [h_mid, h_high, h_eta, List.length_singleton]
+  · dsimp only [MiddlePairingEigenvalueWeight, HighestPairingEigenvalueWeight,
+      HorizonSphereScalarCurvature, LinkAPSSpectralAsymmetry,
+      PrimitiveIdempotentTraceRat, SymmetricSplitRankRat]
+    rw [nat_c9, nat_c7, nat_c6, nat_c3, nat_c2, nat_c1, List.length_singleton]
     norm_num
 
 -- ============================================================================
